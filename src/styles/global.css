@@ -461,7 +461,7 @@ nav {
   display: none;
 }
 
-/*  Mobile Specific Fixes  */
+/*  Mobile Fixes  */
 @media (max-width: 768px) {
   /* Floating Toggle Trigger Button */
   .mobile-menu-toggle-trigger {

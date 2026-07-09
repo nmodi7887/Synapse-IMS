@@ -21,6 +21,7 @@ function Reports() {
   const [invoiceOtherFeeNote, setInvoiceOtherFeeNote] = useState("");
   const [demandOtherFee, setDemandOtherFee] = useState("");
   const [demandOtherFeeNote, setDemandOtherFeeNote] = useState("");
+  const [demandForMonth, setDemandForMonth] = useState("");
   const tableCellStyle = {
     padding: "10px 18px",
     border: "1.5px solid #000",
@@ -214,6 +215,7 @@ function Reports() {
                   <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Class</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">${student.class || "—"}</td></tr>
                   <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Student Name</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">${student.name || "—"}</td></tr>
                   <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Father's Name</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">${student.father_name || "—"}</td></tr>
+                  ${demandForMonth ? `<tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">For Month</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">${demandForMonth}</td></tr>` : ""}
                   <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Monthly Fee</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${sMonthlyFee.toFixed(2)}</td></tr>
                   <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">${otherFeeLabel}</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${sOtherFee.toFixed(2)}</td></tr>
                   <tr style="font-weight:bold;"><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">Net Payable Fee</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${sNetPayable.toFixed(2)}</td></tr>
@@ -375,7 +377,7 @@ function Reports() {
             alignItems: "flex-start",
           }}
         >
-          {/* ===== SECTION 1: INVOICE BILL (INDIVIDUAL) ===== */}
+          {/*  SECTION 1: INVOICE BILL (INDIVIDUAL)  */}
           <div
             className="card billing-card"
             style={{
@@ -880,6 +882,35 @@ function Reports() {
               placeholder='e.g. Books, Supplies, Uniform...'
               value={demandOtherFeeNote}
               onChange={(e) => setDemandOtherFeeNote(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px 14px",
+                background: "rgba(15, 23, 42, 0.6)",
+                border: "1px solid var(--border)",
+                borderRadius: "10px",
+                color: "#fff",
+                fontSize: "13px",
+                outline: "none",
+                marginBottom: "16px",
+                boxSizing: "border-box",
+              }}
+            />
+
+            <strong
+              style={{
+                display: "block",
+                marginBottom: "6px",
+                fontSize: "13px",
+                color: "#94a3b8",
+              }}
+            >
+              For Month
+            </strong>
+            <input
+              type="text"
+              placeholder="e.g. June 2026"
+              value={demandForMonth}
+              onChange={(e) => setDemandForMonth(e.target.value)}
               style={{
                 width: "100%",
                 padding: "10px 14px",
