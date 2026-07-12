@@ -7,8 +7,12 @@ import {
   MdClose,
   MdArrowDropDown,
 } from "react-icons/md";
+import { useToast } from "../components/Toast";
+import { validateAmount, sanitize } from "../utils/validation";
+import SecureNumberInput from "../components/SecureNumberInput";
 
 function Fees() {
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [payments, setPayments] = useState([]);
   const [studentsList, setStudentsList] = useState([]);
@@ -16,6 +20,7 @@ function Fees() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const [showModal, setShowModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   // Search filter dropdown states inside modal
   const [studentSearchInput, setStudentSearchInput] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -110,9 +115,17 @@ function Fees() {
   const addPayment = async (e) => {
     e.preventDefault();
     if (!formData.student_id || !formData.amount) {
-      alert("Please choose a student and enter a transaction amount.");
+      showToast("Please choose a student and enter a transaction amount.", "error");
       return;
     }
+
+    const amountErr = validateAmount(formData.amount);
+    if (amountErr) {
+      showToast(amountErr, "error");
+      return;
+    }
+
+    setSubmitting(true);
 
     try {
       const paymentAmount = Number(formData.amount || 0);
@@ -124,7 +137,8 @@ function Fees() {
         .single();
 
       if (fetchErr || !student) {
-        alert("Verification failed: Chosen Student ID metadata missing.");
+        showToast("Verification failed: Student ID metadata missing.", "error");
+        setSubmitting(false);
         return;
       }
 
@@ -151,7 +165,7 @@ function Fees() {
         dues: calculatedDuesRemaining,
         receipt_no: `REC-${Date.now().toString().slice(-6)}`,
       };
-      if (otherFeeNote) paymentRecord.note = otherFeeNote;
+      if (otherFeeNote) paymentRecord.note = sanitize(otherFeeNote);
 
       const { error: paymentErr } = await supabase.from("payments").insert([paymentRecord]);
 
@@ -167,10 +181,11 @@ function Fees() {
 
       if (studentUpdateErr) throw studentUpdateErr;
 
-      alert("Transaction saved! Master ledger accounts balanced.");
+      showToast("Transaction saved successfully!", "success");
       setShowModal(false);
+      setSubmitting(false);
       
-      setFormData({     // Reset input layout values safely
+      setFormData({
         student_id: "",
         student_name: "",
         class: "",
@@ -182,12 +197,12 @@ function Fees() {
       setOtherFeeAmount("");
       setOtherFeeNote("");
 
-      // Refresh backend
       fetchPayments();
       fetchStudentsDirectory();
     } catch (error) {
       console.error(error);
-      alert("Pipeline failure.");
+      showToast("Transaction failed: " + error.message, "error");
+      setSubmitting(false);
     }
   };
 
@@ -400,7 +415,7 @@ function Fees() {
 
               <div>
                 <strong className="field-label">Other Fees(₹)</strong>
-                <input type="number" placeholder="Books, supplies, etc." value={otherFeeAmount} onChange={(e) => setOtherFeeAmount(e.target.value)} />
+                <SecureNumberInput placeholder="Books, supplies, etc." value={otherFeeAmount} onChange={(e) => setOtherFeeAmount(e.target.value)} />
               </div>
 
               <div style={{ display: formData.student_id && Number(otherFeeAmount || 0) > 0 ? "block" : "none" }}>
@@ -415,12 +430,12 @@ function Fees() {
 
               <div>
                 <strong className="field-label">Payment Amount Collected (₹) *</strong>
-                <input type="number" placeholder="Enter collection amount e.g. 5000" value={formData.amount} onChange={(e) => setFormData((prev) => ({ ...prev, amount: e.target.value }))} required />
+                <SecureNumberInput placeholder="Enter collection amount e.g. 5000" value={formData.amount} onChange={(e) => setFormData((prev) => ({ ...prev, amount: e.target.value }))} required />
               </div>
 
               <div className="form-actions-end">
                 <button type="button" className="btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
-                <button type="submit" className="btn">Authorize Receipt</button>
+                <button type="submit" className="btn" disabled={submitting}>{submitting ? "Processing..." : "Authorize Receipt"}</button>
               </div>
             </form>
           </div>

@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
 
 import MainLayout from "./components/MainLayout";
+import { ToastProvider } from "./components/Toast";
 import StudentProfile from "./pages/StudentProfile";
 import Dashboard from "./pages/Dashboard";
 import Students from "./pages/Students";
@@ -23,6 +24,7 @@ function App() {
           path="*"
           element={
             <ProtectedRoute>
+              <ToastProvider>
               <MainLayout>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
@@ -35,6 +37,7 @@ function App() {
                   <Route path="/reports" element={<Reports />} />
                 </Routes>
               </MainLayout>
+              </ToastProvider>
             </ProtectedRoute>
           }
         />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../services/supabase";
+import SecureNumberInput from "../components/SecureNumberInput";
 import {
   MdSearch,
   MdArrowDropDown,
@@ -697,8 +698,7 @@ function Reports() {
                   >
                     Other Fee (₹)
                   </strong>
-                  <input
-                    type="number"
+                  <SecureNumberInput
                     placeholder="e.g. 500"
                     value={invoiceOtherFee}
                     onChange={(e) => setInvoiceOtherFee(e.target.value)}
@@ -829,8 +829,7 @@ function Reports() {
             >
               Other Fee (₹)
             </strong>
-            <input
-              type="number"
+            <SecureNumberInput
               placeholder="e.g. 500"
               value={demandOtherFee}
               onChange={(e) => setDemandOtherFee(e.target.value)}

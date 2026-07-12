@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../services/supabase";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../components/Toast";
 
 function Students() {
   const [search, setSearch] = useState("");
   const [students, setStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [deletingId, setDeletingId] = useState(null);
   const pageSize = 10;
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   useEffect(() => {
     fetchStudents();
@@ -18,7 +21,6 @@ function Students() {
       .from("students")
       .select("*")
       .order("id");
-    
 
     if (error) {
       console.error(error);
@@ -29,10 +31,12 @@ function Students() {
 
   const deleteStudent = async (student) => {
     const confirmDelete = window.confirm(
-      "Delete this student and all payment history?",
+      `Delete ${student.name} (${student.student_id}) and all payment history? This cannot be undone.`,
     );
 
     if (!confirmDelete) return;
+
+    setDeletingId(student.id);
 
     const { error: paymentError } = await supabase
       .from("payments")
@@ -41,6 +45,8 @@ function Students() {
 
     if (paymentError) {
       console.error(paymentError);
+      showToast("Failed to delete payment history", "error");
+      setDeletingId(null);
       return;
     }
 
@@ -51,9 +57,13 @@ function Students() {
 
     if (studentError) {
       console.error(studentError);
+      showToast("Failed to delete student record", "error");
+      setDeletingId(null);
       return;
     }
 
+    showToast(`Student ${student.name} deleted successfully`, "success");
+    setDeletingId(null);
     fetchStudents();
   };
 
@@ -163,8 +173,9 @@ function Students() {
                     <button
                       className="delete-btn"
                       onClick={() => deleteStudent(student)}
+                      disabled={deletingId === student.id}
                     >
-                      Delete
+                      {deletingId === student.id ? "Deleting..." : "Delete"}
                     </button>
                   </td>
                 </tr>

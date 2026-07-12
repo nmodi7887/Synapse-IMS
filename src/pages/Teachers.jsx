@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../services/supabase";
+import { useToast } from "../components/Toast";
+import { sanitize, validateRequired, validatePhone, validateNumber } from "../utils/validation";
+import SecureNumberInput from "../components/SecureNumberInput";
 
 function Teachers() {
+  const { showToast } = useToast();
   const [teachers, setTeachers] = useState([]);
   const [search, setSearch] = useState("");
   const [editingTeacher, setEditingTeacher] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const filteredTeachers = teachers.filter((teacher) =>
     teacher.name.toLowerCase().includes(search.toLowerCase()),
   );
@@ -14,15 +19,17 @@ function Teachers() {
     fetchTeachers();
   }, []);
   const deleteTeacher = async (id) => {
-    if (!window.confirm("Delete teacher?")) return;
+    if (!window.confirm("Delete teacher? This cannot be undone.")) return;
 
     const { error } = await supabase.from("teachers").delete().eq("id", id);
 
     if (error) {
       console.error(error);
+      showToast("Failed to delete teacher", "error");
       return;
     }
 
+    showToast("Teacher deleted successfully", "success");
     fetchTeachers();
   };
 
@@ -60,6 +67,35 @@ function Teachers() {
   });
 
   const addTeacher = async () => {
+    const sName = sanitize(formData.name);
+    const sSubject = sanitize(formData.subject);
+    const sPhone = sanitize(formData.phone);
+
+    const fieldErrors = [
+      validateRequired(sName, "Teacher Name"),
+      validateRequired(sSubject, "Subject"),
+    ].filter(Boolean);
+
+    if (fieldErrors.length > 0) {
+      showToast(fieldErrors[0], "error");
+      return;
+    }
+
+    if (sPhone) {
+      const phoneErr = validatePhone(sPhone);
+      if (phoneErr) {
+        showToast(phoneErr, "error");
+        return;
+      }
+    }
+
+    const salaryErr = validateNumber(formData.salary, "Salary");
+    if (salaryErr) {
+      showToast(salaryErr, "error");
+      return;
+    }
+
+    setSubmitting(true);
     const year = new Date().getFullYear();
 
     const { count } = await supabase.from("teachers").select("*", {
@@ -72,16 +108,17 @@ function Teachers() {
     const { error } = await supabase.from("teachers").insert([
       {
         teacher_id: teacherCode,
-        name: formData.name,
-        subject: formData.subject,
-        phone: formData.phone,
+        name: sName,
+        subject: sSubject,
+        phone: sPhone,
         salary: Number(formData.salary),
       },
     ]);
 
     if (error) {
       console.error(error);
-      alert(error.message);
+      showToast(error.message, "error");
+      setSubmitting(false);
       return;
     }
 
@@ -94,29 +131,64 @@ function Teachers() {
       salary: "",
     });
 
+    showToast("Teacher added successfully", "success");
+    setSubmitting(false);
     setShowModal(false);
   };
 
   const updateTeacher = async () => {
+    const sName = sanitize(formData.name);
+    const sSubject = sanitize(formData.subject);
+    const sPhone = sanitize(formData.phone);
+
+    const fieldErrors = [
+      validateRequired(sName, "Teacher Name"),
+      validateRequired(sSubject, "Subject"),
+    ].filter(Boolean);
+
+    if (fieldErrors.length > 0) {
+      showToast(fieldErrors[0], "error");
+      return;
+    }
+
+    if (sPhone) {
+      const phoneErr = validatePhone(sPhone);
+      if (phoneErr) {
+        showToast(phoneErr, "error");
+        return;
+      }
+    }
+
+    const salaryErr = validateNumber(formData.salary, "Salary");
+    if (salaryErr) {
+      showToast(salaryErr, "error");
+      return;
+    }
+
+    setSubmitting(true);
+
     const { error } = await supabase
       .from("teachers")
       .update({
-        name: formData.name,
-        subject: formData.subject,
-        phone: formData.phone,
+        name: sName,
+        subject: sSubject,
+        phone: sPhone,
         salary: parseFloat(formData.salary || 0),
       })
       .eq("id", editingTeacher.id);
 
     if (error) {
       console.error(error);
-      alert(error.message);
+      showToast(error.message, "error");
+      setSubmitting(false);
       return;
     }
 
     setEditingTeacher(null);
     setShowModal(false);
+    setSubmitting(false);
 
+    showToast("Teacher updated successfully", "success");
     fetchTeachers();
   };
 
@@ -233,7 +305,7 @@ function Teachers() {
               }
             />
 
-            <input
+            <SecureNumberInput
               placeholder="Salary"
               value={formData.salary}
               onChange={(e) =>
@@ -255,8 +327,9 @@ function Teachers() {
               <button
                 className="btn"
                 onClick={editingTeacher ? updateTeacher : addTeacher}
+                disabled={submitting}
               >
-                {editingTeacher ? "Update" : "Save"}
+                {submitting ? "Saving..." : editingTeacher ? "Update" : "Save"}
               </button>
             </div>
           </div>

@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdCalendarMonth } from "react-icons/md";
 import { supabase } from "../services/supabase";
+import { sanitize, validateRequired, validatePhone, validateFile, checkDuplicate } from "../utils/validation";
+import { useToast } from "../components/Toast";
+import SecureNumberInput from "../components/SecureNumberInput";
 
 function Admission() {
   const navigate = useNavigate();
@@ -78,6 +81,8 @@ function Admission() {
     }
   }
 
+  const { showToast } = useToast();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -86,6 +91,12 @@ function Admission() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const error = validateFile(file);
+      if (error) {
+        showToast(error, "error");
+        e.target.value = "";
+        return;
+      }
       setImageFile(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
@@ -93,15 +104,47 @@ function Admission() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.student_name || !formData.course) {
-      alert("Student Name and Course/Class are required!");
+
+    const sName = sanitize(formData.student_name);
+    const sFather = sanitize(formData.father_name);
+    const sMother = sanitize(formData.mother_name);
+    const sGender = sanitize(formData.gender);
+    const sCategory = sanitize(formData.category);
+    const sAadhaar = sanitize(formData.aadhaar_no);
+    const sMobile = sanitize(formData.mobile_no);
+    const sFatherMobile = sanitize(formData.father_mobile_no);
+    const sAddress = sanitize(formData.address);
+    const sCourse = sanitize(formData.course);
+    const sRollNo = sanitize(formData.roll_no);
+
+    const fieldErrors = [
+      validateRequired(sName, "Student Name"),
+      validateRequired(sCourse, "Course/Class"),
+      validateRequired(sGender, "Gender"),
+      validateRequired(sMobile, "Primary Mobile Number"),
+    ].filter(Boolean);
+
+    if (fieldErrors.length > 0) {
+      showToast(fieldErrors[0], "error");
       return;
     }
 
-    setLoading(true);
-    let publicPhotoUrl = "";
+    const phoneErr = validatePhone(sMobile);
+    if (phoneErr) {
+      showToast(phoneErr, "error");
+      return;
+    }
 
-    // Convert DD/MM/YYYY to YYYY-MM-DD for database
+    if (sFatherMobile) {
+      const fPhoneErr = validatePhone(sFatherMobile);
+      if (fPhoneErr) {
+        showToast(fPhoneErr, "error");
+        return;
+      }
+    }
+
+    setLoading(true);
+
     const parseDate = (str) => {
       if (!str) return "";
       const parts = str.split("/");
@@ -110,6 +153,23 @@ function Admission() {
     };
 
     try {
+      if (!id) {
+        const dupName = await checkDuplicate(supabase, "students", "name", sName);
+        if (dupName) {
+          const dupFather = await checkDuplicate(supabase, "students", "father_name", sFather);
+          if (dupFather) {
+            const dupClass = await checkDuplicate(supabase, "students", "class", sCourse);
+            if (dupClass) {
+              showToast("A student with the same name, father name, and class already exists", "error");
+              setLoading(false);
+              return;
+            }
+          }
+        }
+      }
+
+      let publicPhotoUrl = "";
+
       if (imageFile) {
         const fileExt = imageFile.name.split(".").pop();
         const fileName = `${Date.now()}.${fileExt}`;
@@ -128,18 +188,18 @@ function Admission() {
       }
 
       const payload = {
-        name: formData.student_name,
-        father_name: formData.father_name,
-        mother_name: formData.mother_name,
+        name: sName,
+        father_name: sFather,
+        mother_name: sMother,
         dob: formData.dob,
-        gender: formData.gender,
-        category: formData.category,
-        aadhaar_no: formData.aadhaar_no,
-        phone: formData.mobile_no,
-        father_mobile_no: formData.father_mobile_no,
-        address: formData.address,
-        class: formData.course,
-        roll_no: formData.roll_no,
+        gender: sGender,
+        category: sCategory,
+        aadhaar_no: sAadhaar,
+        phone: sMobile,
+        father_mobile_no: sFatherMobile,
+        address: sAddress,
+        class: sCourse,
+        roll_no: sRollNo,
         admission_date: formData.admission_date,
         total_fee: Number(formData.total_fee || 0),
         photo_url: publicPhotoUrl || previewUrl,
@@ -188,11 +248,11 @@ function Admission() {
 
       if (dbError) throw dbError;
 
-      alert("Student Profile Registered Successfully!");
+      showToast(id ? "Student profile updated successfully!" : "Student profile registered successfully!", "success");
       navigate("/students");
     } catch (error) {
       console.error(error);
-      alert(`Operation Failed: ${error.message}`);
+      showToast(`Operation failed: ${error.message}`, "error");
     } finally {
       setLoading(false);
     }
@@ -412,8 +472,7 @@ function Admission() {
           <div className="profile-grid">
             <div>
               <strong>Monthly Fee (₹)</strong>
-              <input
-                type="number"
+              <SecureNumberInput
                 name="total_fee"
                 value={formData.total_fee}
                 onChange={handleChange}
