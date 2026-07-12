@@ -155,7 +155,7 @@ function Teachers() {
         />
       </div>
       <div className="table-container">
-        <table>
+        <div className="overflow-x-auto"><table>
           <thead>
             <tr>
               <th>ID</th>
@@ -175,7 +175,6 @@ function Teachers() {
                 <td>{teacher.subject}</td>
                 <td>{teacher.phone}</td>
                 <td>₹{teacher.salary}</td>
-
                 <td>
                   <button
                     className="edit-btn"
@@ -183,7 +182,6 @@ function Teachers() {
                   >
                     Edit
                   </button>
-
                   <button
                     className="delete-btn"
                     onClick={() => deleteTeacher(teacher.id)}
@@ -194,7 +192,7 @@ function Teachers() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table></div>
       </div>
 
       {showModal && (

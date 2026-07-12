@@ -312,7 +312,7 @@ function Reports() {
           position: relative;
           background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9)) !important;
           border: 1px solid rgba(129, 140, 248, 0.12) !important;
-          backdrop-filter: blur(12px);
+          backdrop-filter: none !important;
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .billing-card:hover {
@@ -356,33 +356,19 @@ function Reports() {
       `}</style>
 
       {/* WEB DASHBOARD WORKSPACE */}
-      <div
-        style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px 16px" }}
-      >
-        <div className="page-header" style={{ marginBottom: "30px" }}>
-          <h1
-            className="page-title"
-            style={{ display: "flex", alignItems: "center", gap: "10px" }}
-          >
-            <MdAssessment style={{ color: "#818cf8" }} /> Student Billing &
-            Reports
+      <div className="reports-wrapper">
+        <div className="page-header section-header">
+          <h1 className="page-title" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <MdAssessment style={{ color: "#818cf8" }} /> Student Billing & Reports
           </h1>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "24px",
-            flexWrap: "wrap",
-            alignItems: "flex-start",
-          }}
-        >
+        <div className="billing-columns">
           {/*  SECTION 1: INVOICE BILL (INDIVIDUAL)  */}
           <div
             className="card billing-card"
             style={{
               position: "relative",
-              flex: "1 1 400px",
               padding: "24px",
             }}
           >
@@ -478,10 +464,6 @@ function Reports() {
               <div
                 className="autocomplete-dropdown fade-in"
                 style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: "0",
-                  right: "0",
                   background: "linear-gradient(145deg, #1f2937, #111827)",
                   border: "1px solid rgba(129, 140, 248, 0.25)",
                   borderRadius: "16px",
@@ -771,7 +753,6 @@ function Reports() {
           <div
             className="card billing-card demand-card"
             style={{
-              flex: "1 1 400px",
               padding: "24px",
             }}
           >

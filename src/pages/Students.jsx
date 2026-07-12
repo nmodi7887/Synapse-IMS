@@ -85,7 +85,7 @@ function Students() {
       </div>
 
       <div className="table-container">
-        <table>
+        <div className="overflow-x-auto"><table>
           <thead>
             <tr>
               <th>ID</th>
@@ -101,23 +101,12 @@ function Students() {
           <tbody>
             {filteredStudents.length === 0 ? (
               <tr>
-                <td
-                  colSpan="7"
-                  style={{
-                    textAlign: "center",
-                    color: "var(--muted)",
-                    padding: "30px",
-                  }}
-                >
-                  No student records found.
-                </td>
+                <td colSpan="7" className="empty-cell">No student records found.</td>
               </tr>
             ) : (
               filteredStudents.map((student) => (
                 <tr key={student.id}>
-                  <td style={{ fontWeight: "600", color: "#ffffff" }}>
-                    {student.student_id}
-                  </td>
+                  <td className="cell-id">{student.student_id}</td>
                   <td>{student.name}</td>
                   <td>{student.father_name}</td>
                   <td>{student.class}</td>
@@ -157,7 +146,7 @@ function Students() {
               ))
             )}
           </tbody>
-        </table>
+        </table></div>
       </div>
     </>
   );

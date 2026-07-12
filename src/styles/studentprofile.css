@@ -1,11 +1,11 @@
-/* STUDENT PROFILE LAYOUT */
 .student-dashboard {
   display: grid;
-  grid-template-columns: 1fr 1fr; 
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
-  align-items: stretch; 
+  align-items: stretch;
   margin-top: 20px;
 }
+
 .student-card,
 .current-fee-card {
   background: var(--card);
@@ -15,10 +15,16 @@
   box-sizing: border-box;
 }
 
+.student-card {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
 .student-photo {
   width: 120px;
   height: 140px;
-  border-radius: 8px; 
+  border-radius: 8px;
   background: var(--accent-gradient);
   overflow: hidden;
   display: flex;
@@ -31,33 +37,61 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.student-photo img {
+.photo-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.student-basic {
-  flex: 1;
+.photo-initials {
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
-.student-basic h2 {
-  font-size: 26px;
-  margin: 0 0 12px 0;
+.student-basic {
+  flex: 1;
+  width: 100%;
+}
+
+.student-name {
+  font-size: 1.6rem;
+  margin: 0 0 4px 0;
   color: white;
 }
 
-.student-basic p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.4;
+.student-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-.student-basic strong {
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta-full {
+  grid-column: span 2;
+}
+
+.meta-label {
   font-size: 11px;
+  font-weight: 600;
   color: #8a94a6;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.meta-value {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.current-fee-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .fee-info {
@@ -75,7 +109,7 @@
 }
 
 .fee-row:last-child {
-  border-bottom: none; 
+  border-bottom: none;
   padding-bottom: 0;
 }
 
@@ -89,7 +123,7 @@
 }
 
 .due-text {
-  color: #ff4d4f !important; 
+  color: #ff4d4f !important;
 }
 
 .status-badge,
@@ -120,7 +154,6 @@
   color: #ef4444;
 }
 
-/* LEDGER COMPONENT */
 .ledger-card {
   margin-top: 24px;
   background: var(--card);
@@ -164,22 +197,88 @@
   background: rgba(255, 255, 255, .02);
 }
 
-/* MOBILE MEDIA QUERY VIEWPORTS */
+.details-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+.detail-item {
+  flex: 1 1 calc(20% - 16px);
+  min-width: 160px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-sizing: border-box;
+}
+
+.detail-address {
+  flex: 0 1 auto;
+  min-width: 200px;
+}
+
+.detail-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #8a94a6;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  font-size: 14px;
+  color: #fff;
+  word-break: break-word;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
 @media (max-width: 1100px) {
   .student-dashboard {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
+  }
+  .detail-item {
+    flex: 1 1 calc(33.33% - 16px);
+    min-width: 140px;
   }
 }
 
-@media(max-width: 700px) {
+@media (max-width: 700px) {
   .student-card {
     flex-direction: column;
     text-align: center;
     gap: 16px;
   }
-  
   .student-photo {
     width: 110px;
     height: 120px;
+  }
+  .student-meta-grid {
+    grid-template-columns: 1fr;
+  }
+  .meta-full {
+    grid-column: 1;
+  }
+  .detail-item {
+    flex: 1 1 calc(50% - 16px);
+    min-width: 120px;
+  }
+  .detail-address {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-item {
+    flex: 1 1 100%;
   }
 }

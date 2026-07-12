@@ -70,275 +70,80 @@ function Dashboard() {
 
   if (!loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "60vh",
-        }}
-      >
-        <h2 style={{ color: "var(--muted)" }}>Loading Hang tight...</h2>
+      <div className="loading-container">
+        <h2 className="loading-text">Loading Hang tight...</h2>
       </div>
     );
   }
 
   return (
     <>
-      {/* BRAND NAME & DESCRIPTION  */}
-      <div className="page-header" style={{ marginBottom: "40px" }}>
+      <div className="page-header dash-header">
         <div>
-          <h1
-            className="page-title"
-            style={{
-              fontSize: "32px",
-              fontWeight: "900",
-              letterSpacing: "-0.5px",
-            }}
-          >
-            Synapse IMS{" "}
-            <span
-              style={{
-                fontSize: "14px",
-                fontWeight: "600",
-                padding: "4px 8px",
-                background: "rgba(99, 102, 241, 0.15)",
-                color: "#a5b4fc",
-                borderRadius: "6px",
-                marginLeft: "8px",
-                verticalAlign: "middle",
-              }}
-            >
-              v1.0.3
-            </span>
+          <h1 className="page-title">
+            Synapse IMS <span className="version-badge">v2.0.0</span>
           </h1>
-          <p
-            className="page-subtitle"
-            style={{
-              fontSize: "15px",
-              marginTop: "6px",
-              color: "var(--muted)",
-            }}
-          >
+          <p className="page-subtitle">
             Automated Working System — Real-time oversight, automated revenue,
             and registry auditing.
           </p>
         </div>
       </div>
 
-      {/* METRIC SUMMARIES */}
-      <div className="cards" style={{ marginBottom: "35px" }}>
-        <div
-          className="card"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "12px",
-            }}
-          >
+      <div className="cards" style={{ marginBottom: "30px" }}>
+        <div className="card card-stat">
+          <div className="card-stat-header">
             <h3>Total Enrolled</h3>
-            <MdPeople style={{ fontSize: "24px", color: "#818cf8" }} />
+            <MdPeople className="stat-icon icon-indigo" />
           </div>
-          <p>
-            {stats.totalStudents}{" "}
-            <span
-              style={{
-                fontSize: "14px",
-                fontWeight: "400",
-                color: "var(--muted)",
-              }}
-            >
-              Students
-            </span>
-          </p>
+          <p>{stats.totalStudents} <span className="card-stat-label">Students</span></p>
         </div>
-
-        <div
-          className="card"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "12px",
-            }}
-          >
+        <div className="card card-stat">
+          <div className="card-stat-header">
             <h3>Active Faculty</h3>
-            <MdSchool style={{ fontSize: "24px", color: "#c084fc" }} />
+            <MdSchool className="stat-icon icon-purple" />
           </div>
-          <p>
-            {stats.totalTeachers}{" "}
-            <span
-              style={{
-                fontSize: "14px",
-                fontWeight: "400",
-                color: "var(--muted)",
-              }}
-            >
-              Teachers
-            </span>
-          </p>
+          <p>{stats.totalTeachers} <span className="card-stat-label">Teachers</span></p>
         </div>
-
-        <div
-          className="card"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "12px",
-            }}
-          >
+        <div className="card card-stat">
+          <div className="card-stat-header">
             <h3>Revenue Collected</h3>
-            <MdCurrencyRupee style={{ fontSize: "24px", color: "#4ade80" }} />
+            <MdCurrencyRupee className="stat-icon icon-green" />
           </div>
-          <p style={{ color: "#4ade80" }}>₹{stats.totalCollected}</p>
+          <p className="stat-value-green">₹{stats.totalCollected}</p>
         </div>
-
-        <div
-          className="card"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "12px",
-            }}
-          >
+        <div className="card card-stat">
+          <div className="card-stat-header">
             <h3>Pending Balances</h3>
-            <MdReceiptLong style={{ fontSize: "24px", color: "#f87171" }} />
+            <MdReceiptLong className="stat-icon icon-red" />
           </div>
-          <p style={{ color: "#f87171" }}>₹{stats.totalOutstanding}</p>
+          <p className="stat-value-red">₹{stats.totalOutstanding}</p>
         </div>
       </div>
 
-      {/* SYSTEM CONTROLS SHORTCUTS */}
-      <h3
-        style={{
-          color: "#ffffff",
-          fontSize: "16px",
-          marginBottom: "16px",
-          fontWeight: "600",
-          textTransform: "uppercase",
-          letterSpacing: "0.5px",
-        }}
-      >
-        System Command Shortcuts
-      </h3>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "16px",
-          marginBottom: "40px",
-        }}
-      >
-        <button
-          className="theme-btn"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
-            padding: "16px",
-            marginTop: 0,
-          }}
-          onClick={() => navigate("/admission")}
-        >
-          <MdPersonAdd style={{ fontSize: "18px" }} /> Start New Admission
+      <h3 className="section-title">System Command Shortcuts</h3>
+      <div className="shortcuts-grid">
+        <button className="theme-btn shortcut-btn" onClick={() => navigate("/admission")}>
+          <MdPersonAdd /> Start New Admission
         </button>
-        <button
-          className="theme-btn"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
-            padding: "16px",
-            marginTop: 0,
-          }}
-          onClick={() => navigate("/fees")}
-        >
-          <MdAddCard style={{ fontSize: "18px" }} /> Receive Fee Payment
+        <button className="theme-btn shortcut-btn" onClick={() => navigate("/fees")}>
+          <MdAddCard /> Receive Fee Payment
         </button>
-        <button
-          className="theme-btn"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
-            padding: "16px",
-            marginTop: 0,
-          }}
-          onClick={() => navigate("/reports")}
-        >
-          <MdAnalytics style={{ fontSize: "18px" }} /> Generate Bill / Invoice
+        <button className="theme-btn shortcut-btn" onClick={() => navigate("/reports")}>
+          <MdAnalytics /> Generate Bill / Invoice
         </button>
       </div>
 
-      {/* DATA GRIDS RECENT ENTRIES */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(480px, 1fr))",
-          gap: "24px",
-          marginBottom: "40px",
-        }}
-      >
+      <div className="recent-grid">
         <div>
-          <h4
-            style={{
-              color: "#ffffff",
-              fontSize: "15px",
-              marginBottom: "12px",
-              fontWeight: "600",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <h4 className="recent-section-header">
             <span>Recently Enrolled Candidates</span>
-            <span
-              style={{
-                fontSize: "12px",
-                color: "var(--accent)",
-                cursor: "pointer",
-              }}
-              onClick={() => navigate("/students")}
-            >
+            <span className="view-link" onClick={() => navigate("/students")}>
               View Database →
             </span>
           </h4>
           <div className="table-container">
-            <table>
+            <div className="overflow-x-auto"><table>
               <thead>
                 <tr>
                   <th>Code ID</th>
@@ -350,16 +155,7 @@ function Dashboard() {
               <tbody>
                 {recentStudents.length === 0 ? (
                   <tr>
-                    <td
-                      colSpan="4"
-                      style={{
-                        textAlign: "center",
-                        color: "var(--muted)",
-                        padding: "20px",
-                      }}
-                    >
-                      No recent entries found.
-                    </td>
+                    <td colSpan="4" className="empty-cell">No recent entries found.</td>
                   </tr>
                 ) : (
                   recentStudents.map((student) => (
@@ -367,19 +163,11 @@ function Dashboard() {
                       key={student.id}
                       onClick={() => navigate(`/students/${student.id}`)}
                     >
-                      <td style={{ color: "#a5b4fc", fontWeight: "600" }}>
-                        {student.student_id}
-                      </td>
+                      <td className="cell-id">{student.student_id}</td>
                       <td>{student.name}</td>
                       <td>{student.class}</td>
                       <td>
-                        <span
-                          className={
-                            student.fee_status === "Paid"
-                              ? "status-paid"
-                              : "status-due"
-                          }
-                        >
+                        <span className={student.fee_status === "Paid" ? "status-paid" : "status-due"}>
                           {student.fee_status || "Due"}
                         </span>
                       </td>
@@ -387,31 +175,14 @@ function Dashboard() {
                   ))
                 )}
               </tbody>
-            </table>
+            </table></div>
           </div>
         </div>
 
         <div>
-          <h4
-            style={{
-              color: "#ffffff",
-              fontSize: "15px",
-              marginBottom: "12px",
-              fontWeight: "600",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <h4 className="recent-section-header">
             <span>Recent Payment Receipts</span>
-            <span
-              style={{
-                fontSize: "12px",
-                color: "var(--accent)",
-                cursor: "pointer",
-              }}
-              onClick={() => navigate("/fees")}
-            >
+            <span className="view-link" onClick={() => navigate("/fees")}>
               View Ledger →
             </span>
           </h4>
@@ -428,30 +199,15 @@ function Dashboard() {
               <tbody>
                 {recentPayments.length === 0 ? (
                   <tr>
-                    <td
-                      colSpan="4"
-                      style={{
-                        textAlign: "center",
-                        color: "var(--muted)",
-                        padding: "20px",
-                      }}
-                    >
-                      No recent payments.
-                    </td>
+                    <td colSpan="4" className="empty-cell">No recent payments.</td>
                   </tr>
                 ) : (
                   recentPayments.map((payment) => (
                     <tr key={payment.id}>
-                      <td style={{ color: "var(--muted)" }}>
-                        {payment.receipt_no}
-                      </td>
-                      <td style={{ fontWeight: "500" }}>
-                        {payment.student_name}
-                      </td>
+                      <td className="cell-muted">{payment.receipt_no}</td>
+                      <td className="cell-name">{payment.student_name}</td>
                       <td>{payment.payment_date}</td>
-                      <td style={{ color: "#4ade80", fontWeight: "600" }}>
-                        ₹{payment.amount}
-                      </td>
+                      <td className="cell-amount">₹{payment.amount}</td>
                     </tr>
                   ))
                 )}

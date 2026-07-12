@@ -7,6 +7,8 @@ import {
   MdSchool,
   MdCurrencyRupee,
   MdAnalytics,
+  MdMenu,
+  MdClose,
 } from "react-icons/md";
 import { supabase } from "../services/supabase";
 
@@ -16,33 +18,22 @@ function MainLayout({ children }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   useEffect(() => {
     async function loadUser() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-
       setUser(user);
-
       if (user) {
         const { data, error } = await supabase
           .from("profiles")
           .select("full_name, role")
           .eq("id", user.id)
           .single();
-
-        console.log("Auth User Id:", user.id);
-        console.log("Profile Data:", data);
-        console.log("Profile Error:", error);
-
-        if (!error) {
-          setProfile(data);
-        }
+        if (!error) setProfile(data);
       }
     }
-
     loadUser();
   }, []);
 
@@ -51,108 +42,97 @@ function MainLayout({ children }) {
     navigate("/login");
   };
 
-  const closeSidebarOnMobile = () => {
-    setIsMobileOpen(false);
-  };
-
   return (
     <div className="layout">
-      {/* Mobile Menu Button */}
+      {isMobileOpen && (
+        <div
+          className="mobile-overlay"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
       <button
         className="mobile-menu-toggle-trigger"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
+        aria-label="Toggle menu"
       >
-        {isMobileOpen ? "✕ Menu" : "☰ Menu"}
+        {isMobileOpen ? <MdClose size={20} /> : <MdMenu size={20} />}
       </button>
 
-      {/* Sidebar */}
       <aside
         className={`sidebar ${
           isMobileOpen ? "mobile-expanded" : "mobile-collapsed"
         }`}
       >
-        {/* Logo */}
         <div className="logo-container">
           <img src="/logo.png" alt="SWC Logo" className="sidebar-logo" />
         </div>
 
-        {/* Navigation */}
         <nav>
           <Link
             to="/"
             className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
-            onClick={closeSidebarOnMobile}
+            onClick={() => setIsMobileOpen(false)}
           >
             <MdDashboard />
             <span className="nav-text">Dashboard</span>
           </Link>
-
           <Link
             to="/students"
             className={`nav-link ${
               location.pathname.startsWith("/students") ? "active" : ""
             }`}
-            onClick={closeSidebarOnMobile}
+            onClick={() => setIsMobileOpen(false)}
           >
             <MdPeople />
             <span className="nav-text">Students</span>
           </Link>
-
           <Link
             to="/teachers"
             className={`nav-link ${
               location.pathname === "/teachers" ? "active" : ""
             }`}
-            onClick={closeSidebarOnMobile}
+            onClick={() => setIsMobileOpen(false)}
           >
             <MdSchool />
             <span className="nav-text">Teachers</span>
           </Link>
-
           <Link
             to="/fees"
             className={`nav-link ${
               location.pathname === "/fees" ? "active" : ""
             }`}
-            onClick={closeSidebarOnMobile}
+            onClick={() => setIsMobileOpen(false)}
           >
             <MdCurrencyRupee />
             <span className="nav-text">Fees</span>
           </Link>
-
           <Link
             to="/reports"
             className={`nav-link ${
               location.pathname === "/reports" ? "active" : ""
             }`}
-            onClick={closeSidebarOnMobile}
+            onClick={() => setIsMobileOpen(false)}
           >
             <MdAnalytics />
             <span className="nav-text">Billing</span>
           </Link>
         </nav>
+
         <div className="sidebar-footer">
           <div className="profile-card">
             <div className="profile-info">
               <div className="user-name">
                 {profile?.full_name || "Loading..."}
               </div>
-
               <div className="user-role">{profile?.role || ""}</div>
             </div>
-
-            <button
-              className="logout-btn"
-              onClick={handleLogout}
-              title="Logout"
-            > 
+            <button className="logout-btn" onClick={handleLogout} title="Logout">
               <MdLogout size={18} />
             </button>
           </div>
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="main-content">{children}</main>
     </div>
   );

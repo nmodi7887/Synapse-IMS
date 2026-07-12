@@ -211,64 +211,32 @@ function Fees() {
     <>
       {/* SECTION TOP MODULE HEADER WITH ALIGNED TOP-RIGHT BUTTON */}
 
-      <div
-        className="page-header"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          width: "100%",
-          marginBottom: "24px",
-        }}
-      >
+      <div className="page-header page-header-between">
         <div>
           <h1 className="page-title">Fees & Accounts Workspace</h1>
-          <p className="page-subtitle">
-            Process and track transaction receipts / bills
-          </p>
+          <p className="page-subtitle">Process and track transaction receipts / bills</p>
         </div>
         <div className="header-actions">
-          <button className="glass-btn" onClick={() => navigate("/reports")}>
-            Print Bill
-          </button>
-
-          <button className="collect-btn" onClick={() => setShowModal(true)}>
-            + Collect Payment
-          </button>
+          <button className="glass-btn" onClick={() => navigate("/reports")}>Print Bill</button>
+          <button className="collect-btn" onClick={() => setShowModal(true)}>+ Collect Payment</button>
         </div>
       </div>
 
       {/* FILTER SEARCH FIELD FOR LEDGER TABLE */}
-      <div
-        className="search-bar"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          margin: "24px 0",
-          flexWrap: "wrap",
-        }}
-      >
-        <MdSearch style={{ color: "var(--muted)", fontSize: "20px" }} />
+      <div className="search-bar">
+        <MdSearch className="search-icon" />
         <input
           type="text"
           placeholder="Search receipts by ID, name, class or code..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          style={{
-            background: "transparent",
-            border: "none",
-            color: "#fff",
-            width: "100%",
-            maxWidth: "300px",
-            outline: "none",
-          }}
+          className="search-input"
         />
       </div>
 
       {/* LEDGER TRANSACTION HISTORICAL RECORDS */}
       <div className="table-container">
-        <table>
+        <div className="overflow-x-auto"><table>
           <thead>
             <tr>
               <th>Receipt Code</th>
@@ -284,225 +252,73 @@ function Fees() {
           <tbody>
             {loading ? (
               <tr>
-                <td
-                  colSpan="8"
-                  style={{
-                    textAlign: "center",
-                    color: "var(--muted)",
-                    padding: "30px",
-                  }}
-                >
-                  Auditing Transaction Records...
-                </td>
+                <td colSpan="8" className="empty-cell">Auditing Transaction Records...</td>
               </tr>
             ) : filteredPayments.length === 0 ? (
               <tr>
-                <td
-                  colSpan="8"
-                  style={{
-                    textAlign: "center",
-                    color: "var(--muted)",
-                    padding: "30px",
-                  }}
-                >
-                  No matched receipt lines logged.
-                </td>
+                <td colSpan="8" className="empty-cell">No matched receipt lines logged.</td>
               </tr>
             ) : (
               filteredPayments.map((p) => (
                 <tr key={p.id}>
-                  <td style={{ color: "#a5b4fc", fontWeight: "600" }}>
-                    {p.receipt_no}
-                  </td>
-                  <td style={{ color: "var(--muted)" }}>{p.student_id}</td>
+                  <td className="cell-receipt">{p.receipt_no}</td>
+                  <td className="cell-muted">{p.student_id}</td>
                   <td style={{ fontWeight: "500" }}>{p.student_name}</td>
                   <td>{p.class || "—"}</td>
                   <td>{p.payment_date}</td>
-                  <td style={{ color: "#4ade80", fontWeight: "600" }}>
-                    ₹{p.amount}
-                  </td>
-                  <td style={{ color: "var(--muted)", fontSize: "13px", maxWidth: "120px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {p.note || "—"}
-                  </td>
-                  <td
-                    style={{
-                      color: p.dues > 0 ? "#f87171" : "#4ade80",
-                      fontWeight: "600",
-                    }}
-                  >
+                  <td className="cell-amount-paid">₹{p.amount}</td>
+                  <td className="cell-note">{p.note || "—"}</td>
+                  <td className={p.dues > 0 ? "cell-dues" : "cell-settled-txt"}>
                     {p.dues > 0 ? `₹${p.dues}` : "Settled ✓"}
                   </td>
                 </tr>
               ))
             )}
           </tbody>
-        </table>
+        </table></div>
       </div>
 
       {/* MODAL BILLING POPUP WINDOW WITH EMBEDDED FILTER DROPDOWN SEARCH */}
       {showModal && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(0,0,0,0.75)",
-            backdropFilter: "blur(5px)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 999,
-          }}
-        >
-          <div
-            className="card"
-            style={{
-              width: "100%",
-              maxWidth: "520px",
-              background: "#111827",
-              border: "1px solid var(--border)",
-              borderRadius: "16px",
-              padding: "28px",
-              boxShadow: "0 25px 50px -12px rgba(0,0,0,0.75)",
-              overflow: "visible",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "20px",
-              }}
-            >
-              <h3
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  margin: 0,
-                  color: "#fff",
-                  fontSize: "18px",
-                }}
-              >
-                <MdReceiptLong style={{ color: "#818cf8" }} /> Log Fee Payment
-                Invoice
+        <div className="modal-overlay-fees" onClick={(e) => { if (e.target === e.currentTarget) setShowModal(false); }}>
+          <div className="modal-card-inner" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3 className="modal-title">
+                <MdReceiptLong style={{ color: "#818cf8" }} /> Log Fee Payment Invoice
               </h3>
-              <MdClose
-                style={{
-                  color: "var(--muted)",
-                  cursor: "pointer",
-                  fontSize: "22px",
-                }}
-                onClick={() => setShowModal(false)}
-              />
+              <MdClose className="modal-close" onClick={() => setShowModal(false)} />
             </div>
 
-            <form
-              onSubmit={addPayment}
-              style={{ display: "flex", flexDirection: "column", gap: "18px" }}
-            >
-              {/* INTERACTIVE AUTOCOMPLETE DROPDOWN SEARCH COMPONENT */}
-              <div style={{ position: "relative" }}>
-                <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "6px",
-                    fontSize: "13px",
-                    color: "#e5e7eb",
-                  }}
-                >
-                  Search Student Name, ID or Class *
-                </strong>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    position: "relative",
-                  }}
-                >
+            <form className="modal-form" onSubmit={addPayment}>
+              <div className="field-group">
+                <strong className="field-label">Search Student Name, ID or Class *</strong>
+                <div className="search-field-wrap">
                   <input
                     type="text"
                     placeholder="Type name or code to filter search..."
                     value={studentSearchInput}
-                    onChange={(e) => {
-                      setStudentSearchInput(e.target.value);
-                      setShowDropdown(true);
-                    }}
+                    onChange={(e) => { setStudentSearchInput(e.target.value); setShowDropdown(true); }}
                     onFocus={() => setShowDropdown(true)}
                     required
-                    style={{ width: "100%", paddingRight: "35px" }}
+                    className="field-input"
                   />
-                  <MdArrowDropDown
-                    style={{
-                      position: "absolute",
-                      right: "12px",
-                      color: "var(--muted)",
-                      fontSize: "20px",
-                      pointerEvents: "none",
-                    }}
-                  />
+                  <MdArrowDropDown className="field-dropdown-icon" />
                 </div>
 
                 {/* Floating Results Popup Container */}
                 {showDropdown && studentSearchInput.length >= 0 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "100%",
-                      left: 0,
-                      width: "100%",
-                      background: "#1f2937",
-                      border: "1px solid var(--border)",
-                      borderRadius: "10px",
-                      marginTop: "4px",
-                      maxHeight: "180px",
-                      overflowY: "auto",
-                      zIndex: 1000,
-                      boxShadow: "0 10px 15px -3px rgba(0,0,0,0.5)",
-                    }}
-                  >
+                  <div className="dropdown-list">
                     {filteredStudentSearchOptions.length === 0 ? (
-                      <div
-                        style={{
-                          padding: "12px",
-                          color: "var(--muted)",
-                          fontSize: "13px",
-                          textAlign: "center",
-                        }}
-                      >
-                        No students match your query
-                      </div>
+                      <div className="dropdown-empty">No students match your query</div>
                     ) : (
                       filteredStudentSearchOptions.map((student) => (
                         <div
                           key={student.student_id}
                           onClick={() => handleSelectStudent(student)}
-                          style={{
-                            padding: "10px 14px",
-                            cursor: "pointer",
-                            borderBottom: "1px solid rgba(255,255,255,0.02)",
-                            fontSize: "13px",
-                            transition: "background 0.15s ease",
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                          onMouseEnter={(e) =>
-                            (e.target.style.background =
-                              "rgba(255,255,255,0.05)")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.target.style.background = "transparent")
-                          }
+                          className="dropdown-item"
                         >
-                          <span style={{ fontWeight: "500", color: "#fff" }}>
-                            {student.name}
-                          </span>
-                          <span style={{ color: "#a5b4fc", fontSize: "12px" }}>
-                            {student.student_id}
-                          </span>
+                          <span>{student.name}</span>
+                          <span className="dropdown-item-id">{student.student_id}</span>
                         </div>
                       ))
                     )}
@@ -510,170 +326,45 @@ function Fees() {
                 )}
               </div>
 
-              {/* READ-ONLY SUMMARY FIELDS TO VERIFY TARGET PROFILE CORES */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "14px",
-                }}
-              >
+              <div className="modal-form-grid">
                 <div>
-                  <strong
-                    style={{
-                      display: "block",
-                      marginBottom: "6px",
-                      fontSize: "13px",
-                      color: "var(--muted)",
-                    }}
-                  >
-                    Assigned Course
-                  </strong>
-                  <input
-                    type="text"
-                    value={formData.class || "—"}
-                    readOnly
-                    style={{
-                      background: "rgba(255,255,255,0.02)",
-                      color: "var(--muted)",
-                      cursor: "not-allowed",
-                    }}
-                  />
+                  <strong className="form-field-label">Assigned Course</strong>
+                  <input type="text" value={formData.class || "—"} readOnly className="field-readonly" />
                 </div>
                 <div>
-                  <strong
-                    style={{
-                      display: "block",
-                      marginBottom: "6px",
-                      fontSize: "13px",
-                      color: "var(--muted)",
-                    }}
-                  >
-                    Current Dues Owed
-                  </strong>
+                  <strong className="form-field-label">Current Dues Owed</strong>
                   <input
                     type="text"
-                    value={
-                      formData.student_id ? `₹${selectedStudentDues}` : "—"
-                    }
+                    value={formData.student_id ? `₹${selectedStudentDues}` : "—"}
                     readOnly
-                    style={{
-                      background: "rgba(255,255,255,0.02)",
-                      color: selectedStudentDues > 0 ? "#f87171" : "#4ade80",
-                      fontWeight: "600",
-                      cursor: "not-allowed",
-                    }}
+                    className={`field-readonly ${selectedStudentDues > 0 ? "field-dues" : "field-settled"}`}
                   />
                 </div>
               </div>
 
               <div>
-                <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "6px",
-                    fontSize: "13px",
-                    color: "#e5e7eb",
-                  }}
-                >
-                  Other Fees(₹)
-                </strong>
-                <input
-                  type="number"
-                  placeholder="Books, supplies, etc."
-                  value={otherFeeAmount}
-                  onChange={(e) => setOtherFeeAmount(e.target.value)}
-                />
+                <strong className="field-label">Other Fees(₹)</strong>
+                <input type="number" placeholder="Books, supplies, etc." value={otherFeeAmount} onChange={(e) => setOtherFeeAmount(e.target.value)} />
               </div>
 
               <div style={{ display: formData.student_id && Number(otherFeeAmount || 0) > 0 ? "block" : "none" }}>
-                <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "6px",
-                    fontSize: "13px",
-                    color: "#e5e7eb",
-                  }}
-                >
-                  What is this Other Fee for?
-                </strong>
-                <input
-                  type="text"
-                  placeholder='e.g. Books, Supplies, Uniform...'
-                  value={otherFeeNote}
-                  onChange={(e) => setOtherFeeNote(e.target.value)}
-                />
+                <strong className="field-label">What is this Other Fee for?</strong>
+                <input type="text" placeholder="e.g. Books, Supplies, Uniform..." value={otherFeeNote} onChange={(e) => setOtherFeeNote(e.target.value)} />
               </div>
 
               <div>
-                <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "6px",
-                    fontSize: "13px",
-                    color: "#e5e7eb",
-                  }}
-                >
-                  Date of Transaction
-                </strong>
-                <input
-                  type="date"
-                  value={formData.payment_date}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      payment_date: e.target.value,
-                    }))
-                  }
-                  required
-                />
+                <strong className="field-label">Date of Transaction</strong>
+                <input type="date" value={formData.payment_date} onChange={(e) => setFormData((prev) => ({ ...prev, payment_date: e.target.value }))} required />
               </div>
 
               <div>
-                <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "6px",
-                    fontSize: "13px",
-                    color: "#e5e7eb",
-                  }}
-                >
-                  Payment Amount Collected (₹) *
-                </strong>
-                <input
-                  type="number"
-                  placeholder="Enter collection amount e.g. 5000"
-                  value={formData.amount}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, amount: e.target.value }))
-                  }
-                  required
-                />
+                <strong className="field-label">Payment Amount Collected (₹) *</strong>
+                <input type="number" placeholder="Enter collection amount e.g. 5000" value={formData.amount} onChange={(e) => setFormData((prev) => ({ ...prev, amount: e.target.value }))} required />
               </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  gap: "12px",
-                  marginTop: "10px",
-                }}
-              >
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  style={{ marginTop: 0 }}
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn"
-                  style={{ marginTop: 0, padding: "10px 24px" }}
-                >
-                  Authorize Receipt
-                </button>
+              <div className="form-actions-end">
+                <button type="button" className="btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
+                <button type="submit" className="btn">Authorize Receipt</button>
               </div>
             </form>
           </div>

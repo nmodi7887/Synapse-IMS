@@ -40,14 +40,7 @@ function StudentProfile() {
 
   if (!student) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "50vh",
-        }}
-      >
+      <div className="loading-container">
         <h2 style={{ color: "var(--muted)" }}>Loading Student Records...</h2>
       </div>
     );
@@ -90,114 +83,54 @@ function StudentProfile() {
   return (
     <>
       <div className="page-top" style={{ marginBottom: "20px" }}>
-        <button className="back-btn" onClick={() => navigate("/students")}>
-          Back to Directory
-        </button>
+        <button className="back-btn" onClick={() => navigate("/students")}>Back to Directory</button>
       </div>
 
-      {/* TOP DASHBOARD GRID CONTAINER */}
-      <div 
-        className="student-dashboard" 
-        style={{ 
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "20px",
-          marginBottom: "20px",
-          alignItems: "stretch" 
-        }}
-      >
-        {/* LEFT CARD: STUDENT PROFILE */}
-        <div 
-          className="student-card" 
-          style={{ 
-            display: "flex", 
-            gap: "24px", 
-            alignItems: "center", 
-            padding: "24px",
-            height: "100%",
-            boxSizing: "border-box",
-            margin: 0
-          }}
-        >
-          <div 
-            className="student-photo" 
-            style={{ 
-              width: "120px", 
-              height: "140px", 
-              minWidth: "120px",
-              borderRadius: "8px", 
-              overflow: "hidden",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "rgba(255, 255, 255, 0.05)",
-              border: "1px solid rgba(255, 255, 255, 0.1)"
-            }}
-          >
+      <div className="student-dashboard">
+        <div className="student-card">
+          <div className="student-photo">
             {student.photo_url ? (
-              <img src={student.photo_url} alt={student.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img src={student.photo_url} alt={student.name} className="photo-img" />
             ) : (
-              <span style={{ fontSize: "1.8rem", fontWeight: "bold" }}>{initials}</span>
+              <span className="photo-initials">{initials}</span>
             )}
           </div>
 
-          <div className="student-basic" style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
-            <h2 style={{ margin: "0 0 4px 0", fontSize: "1.6rem" }}>{student.name}</h2>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-              <p style={{ margin: 0 }}>
-                <strong style={{ fontSize: "11px", color: "#8a94a6" }}>Student ID</strong>
-                <br />
-                {student.student_id}
-              </p>
-
-              <p style={{ margin: 0 }}>
-                <strong style={{ fontSize: "11px", color: "#8a94a6" }}>Admission No.</strong>
-                <br />
-                {student.roll_no || "--"}
-              </p>
-
-              <p style={{ margin: 0, gridColumn: "span 2" }}>
-                <strong style={{ fontSize: "11px", color: "#8a94a6" }}>Class</strong>
-                <br />
-                {student.class || "--"}
-              </p>
+          <div className="student-basic">
+            <h2 className="student-name">{student.name}</h2>
+            <div className="student-meta-grid">
+              <div className="meta-item">
+                <span className="meta-label">Student ID</span>
+                <span className="meta-value">{student.student_id}</span>
+              </div>
+              <div className="meta-item">
+                <span className="meta-label">Admission No.</span>
+                <span className="meta-value">{student.roll_no || "--"}</span>
+              </div>
+              <div className="meta-item meta-full">
+                <span className="meta-label">Class</span>
+                <span className="meta-value">{student.class || "--"}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* RIGHT CARD: CURRENT MONTH DYNAMIC FEES */}
-        <div 
-          className="current-fee-card"
-          style={{
-            padding: "24px",
-            height: "100%",
-            boxSizing: "border-box",
-            margin: 0,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center"
-          }}
-        >
+        <div className="current-fee-card">
           <h3 className="section-title" style={{ marginTop: 0, marginBottom: "16px" }}>Current Month</h3>
-
-          <div className="fee-info" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <div className="fee-row" style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="fee-info">
+            <div className="fee-row">
               <span>Monthly Fee</span>
               <strong>₹{monthlyFee}</strong>
             </div>
-
-            <div className="fee-row" style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="fee-row">
               <span>Paid</span>
               <strong>₹{paidFee}</strong>
             </div>
-
-            <div className="fee-row" style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="fee-row">
               <span>Due</span>
               <strong className="due-text" style={{ color: dueFee > 0 ? "#ff4d4f" : "inherit" }}>₹{dueFee}</strong>
             </div>
-
-            <div className="fee-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="fee-row">
               <span>Status</span>
               <span className={`status-badge ${statusClass}`}>{statusText}</span>
             </div>
@@ -205,11 +138,9 @@ function StudentProfile() {
         </div>
       </div>
 
-      {/* FULL-WIDTH STUDENT DETAILS ROW */}
-      <div className="ledger-card" style={{ marginBottom: "20px", width: "100%", boxSizing: "border-box" }}>
-        <div className="ledger-title" style={{ marginBottom: "20px" }}>Student Details</div>
-
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", width: "100%" }}>
+      <div className="ledger-card">
+        <div className="ledger-title">Student Details</div>
+        <div className="details-grid">
           {[
             { label: "ADMISSION DATE", value: formatDate(student.admission_date) },
             { label: "FATHER NAME", value: student.father_name },
@@ -220,31 +151,16 @@ function StudentProfile() {
             { label: "AADHAAR", value: student.aadhaar_no },
             { label: "MOBILE", value: student.phone },
             { label: "FATHER MOBILE", value: student.father_mobile_no },
-            { label: "ADDRESS", value: student.address, isAddress: true }
           ].map((item, index) => (
-            <div 
-              key={index} 
-              style={{ 
-                flex: item.isAddress ? "0 1 auto" : "1 1 calc(20% - 16px)",
-                minWidth: item.isAddress ? "200px" : "160px",
-                backgroundColor: "rgba(255, 255, 255, 0.03)", 
-                border: "1px solid rgba(255, 255, 255, 0.05)",
-                borderRadius: "8px", 
-                padding: "12px 16px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-                boxSizing: "border-box"
-              }}
-            >
-              <span style={{ fontSize: "11px", fontWeight: "600", color: "#8a94a6", letterSpacing: "0.5px" }}>
-                {item.label}
-              </span>
-              <span style={{ fontSize: "14px", color: "#ffffff", wordBreak: "break-word" }}>
-                {item.value || "--"}
-              </span>
+            <div key={index} className="detail-item">
+              <span className="detail-label">{item.label}</span>
+              <span className="detail-value">{item.value || "--"}</span>
             </div>
           ))}
+          <div className="detail-item detail-address">
+            <span className="detail-label">ADDRESS</span>
+            <span className="detail-value">{student.address || "--"}</span>
+          </div>
         </div>
       </div>
 

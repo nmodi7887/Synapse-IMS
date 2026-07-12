@@ -200,57 +200,20 @@ function Admission() {
 
   return (
     <>
-      <div
-        className="page-top"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <button className="back-btn" onClick={() => navigate("/students")}>
-          ← Back to Directory
-        </button>
+      <div className="page-top page-top-row">
+        <button className="back-btn" onClick={() => navigate("/students")}>← Back to Directory</button>
         <h1 className="page-title" style={{ fontSize: "24px", margin: 0 }}>
           {id ? "Edit Student Profile" : "New Admission Registration"}
         </h1>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          marginTop: "24px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "24px",
-        }}
-      >
-        {/* PHOTO UPLOAD  */}
-        <div
-          className="card"
-          style={{ display: "flex", alignItems: "center", gap: "20px" }}
-        >
-          <div
-            className="profile-avatar"
-            style={{
-              borderRadius: "16px",
-              width: "80px",
-              height: "80px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              background: "rgba(255,255,255,0.03)",
-              overflow: "hidden",
-            }}
-          >
+      <form className="admission-form" onSubmit={handleSubmit}>
+        <div className="card photo-upload-card">
+          <div className="profile-avatar">
             {previewUrl ? (
-              <img
-                src={previewUrl}
-                alt="Preview"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
+              <img src={previewUrl} alt="Preview" className="avatar-img" />
             ) : (
-              "📸"
+              <span style={{ fontSize: "28px" }}>📸</span>
             )}
           </div>
           <div>
@@ -259,7 +222,7 @@ function Admission() {
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              style={{ background: "transparent", border: "none", padding: 0 }}
+              style={{ background: "transparent", border: "none", padding: 0, fontSize: "13px", color: "var(--muted)" }}
             />
           </div>
         </div>
@@ -460,34 +423,10 @@ function Admission() {
           </div>
         </div>
 
-        {/* EXECUTION ACTIONS */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: "16px",
-            marginBottom: "40px",
-          }}
-        >
-          <button
-            type="button"
-            className="btn-secondary"
-            style={{ padding: "12px 24px" }}
-            onClick={() => navigate("/students")}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="btn"
-            style={{ padding: "12px 32px" }}
-            disabled={loading}
-          >
-            {loading
-              ? "Saving..."
-              : id
-                ? "Update Student"
-                : "Finalize Admission"}
+        <div className="form-actions">
+          <button type="button" className="btn-secondary" onClick={() => navigate("/students")}>Cancel</button>
+          <button type="submit" className="btn" disabled={loading}>
+            {loading ? "Saving..." : id ? "Update Student" : "Finalize Admission"}
           </button>
         </div>
       </form>
