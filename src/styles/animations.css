@@ -1,0 +1,10 @@
+@keyframes logoGlow {
+  0% {
+    text-shadow: 0 0 4px rgba(99, 102, 241, 0.2);
+    transform: scale(1);
+  }
+  100% {
+    text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+    transform: scale(1.05);
+  }
+}

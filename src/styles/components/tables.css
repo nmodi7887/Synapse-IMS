@@ -1,0 +1,98 @@
+.table-container {
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 640px) {
+  .table-container {
+    padding: 0;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 18px 24px;
+  color: #e2e8f0;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.table-container tbody tr {
+  transition: background 0.2s ease;
+}
+
+.table-container tbody tr:hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.empty-cell {
+  text-align: center;
+  color: var(--muted);
+  padding: 20px;
+}
+
+.cell-id {
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+.cell-muted {
+  color: var(--muted);
+}
+
+.cell-amount {
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.cell-name {
+  font-weight: 500;
+}
+
+.cell-receipt {
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+.cell-amount-paid {
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.cell-note {
+  color: var(--muted);
+  font-size: 13px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -3,9 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./styles/global.css";
 import "./styles/login.css"
-import "./styles/dashboard.css"
-import "./styles/students.css"
-import "./styles/fees.css"
 import "./styles/studentprofile.css"
 
 ReactDOM.createRoot(document.getElementById("root")).render(
