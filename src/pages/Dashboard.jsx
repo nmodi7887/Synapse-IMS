@@ -47,18 +47,35 @@ function Dashboard() {
 
       const totalStuds = studentsData ? studentsData.length : 0;
       const totalTechs = teachersData ? teachersData.length : 0;
-      const revenue = paymentsData
-        ? paymentsData.reduce((sum, p) => sum + Number(p.amount || 0), 0)
+
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+      const monthlyRevenue = paymentsData
+        ? paymentsData
+            .filter((p) => {
+              if (!p.payment_date) return false;
+              const d = new Date(p.payment_date);
+              return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+            })
+            .reduce((sum, p) => sum + Number(p.amount || 0), 0)
         : 0;
-      const dues = paymentsData
-        ? paymentsData.reduce((sum, p) => sum + Number(p.dues || 0), 0)
+
+      const monthlyDues = paymentsData
+        ? paymentsData
+            .filter((p) => {
+              if (!p.payment_date) return false;
+              const d = new Date(p.payment_date);
+              return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+            })
+            .reduce((sum, p) => sum + Number(p.dues || 0), 0)
         : 0;
 
       setStats({
         totalStudents: totalStuds,
         totalTeachers: totalTechs,
-        totalCollected: revenue,
-        totalOutstanding: dues,
+        totalCollected: monthlyRevenue,
+        totalOutstanding: monthlyDues,
       });
       setRecentStudents(studentsData ? studentsData.slice(0, 5) : []);
       setRecentPayments(paymentsData ? paymentsData.slice(0, 5) : []);
@@ -108,7 +125,7 @@ function Dashboard() {
         </div>
         <div className="card card-stat">
           <div className="card-stat-header">
-            <h3>Revenue Collected</h3>
+            <h3>Monthly Revenue</h3>
             <MdCurrencyRupee className="stat-icon icon-green" />
           </div>
           <p className="stat-value-green">₹{formatCurrency(stats.totalCollected)}</p>
