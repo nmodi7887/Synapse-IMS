@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
-import ProtectedRoute from "./pages/ProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
 
 import MainLayout from "./components/MainLayout";
 import StudentProfile from "./pages/StudentProfile";
