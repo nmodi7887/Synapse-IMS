@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 function Students() {
   const [search, setSearch] = useState("");
   const [students, setStudents] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,6 +64,29 @@ function Students() {
       (student.class || "").toLowerCase().includes(search.toLowerCase()),
   );
 
+  const totalFiltered = filteredStudents.length;
+  const totalPages = Math.ceil(totalFiltered / pageSize) || 1;
+  const paginatedStudents = filteredStudents.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
+
+  function getPageNumbers() {
+    const pages = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+      return pages;
+    }
+    pages.push(1);
+    if (currentPage > 3) pages.push("...");
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (currentPage < totalPages - 2) pages.push("...");
+    pages.push(totalPages);
+    return pages;
+  }
+
   return (
     <>
       <div className="page-header">
@@ -80,7 +105,7 @@ function Students() {
           type="text"
           placeholder="Search student by name, ID or class..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
         />
       </div>
 
@@ -104,7 +129,7 @@ function Students() {
                 <td colSpan="7" className="empty-cell">No student records found.</td>
               </tr>
             ) : (
-              filteredStudents.map((student) => (
+              paginatedStudents.map((student) => (
                 <tr key={student.id}>
                   <td className="cell-id">{student.student_id}</td>
                   <td>{student.name}</td>
@@ -122,7 +147,7 @@ function Students() {
                       {student.fee_status || "Due"}
                     </span>
                   </td>
-                  <td>
+                  <td style={{ whiteSpace: "nowrap" }}>
                     <button
                       className="view-btn"
                       onClick={() => navigate(`/students/${student.id}`)}
@@ -147,6 +172,80 @@ function Students() {
             )}
           </tbody>
         </table></div>
+      </div>
+
+      <div style={{
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "16px",
+        marginTop: "16px",
+        padding: "12px 0",
+      }}>
+        <div style={{ color: "#94a3b8", fontSize: "14px" }}>
+          Showing {totalFiltered === 0 ? 0 : (currentPage - 1) * pageSize + 1}–
+          {Math.min(currentPage * pageSize, totalFiltered)} of {totalFiltered} students
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((p) => p - 1)}
+            style={{
+              padding: "6px 14px",
+              borderRadius: "6px",
+              border: "1px solid rgba(129,140,248,0.2)",
+              background: currentPage === 1 ? "transparent" : "rgba(129,140,248,0.1)",
+              color: currentPage === 1 ? "#475569" : "#e2e8f0",
+              cursor: currentPage === 1 ? "default" : "pointer",
+              fontSize: "14px",
+            }}
+          >
+            Previous
+          </button>
+
+          {getPageNumbers().map((page, idx) =>
+            page === "..." ? (
+              <span key={`e${idx}`} style={{ color: "#64748b", padding: "0 4px" }}>...</span>
+            ) : (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                style={{
+                  minWidth: "36px",
+                  height: "36px",
+                  borderRadius: "6px",
+                  border: currentPage === page ? "1px solid #818cf8" : "1px solid rgba(129,140,248,0.2)",
+                  background: currentPage === page ? "rgba(129,140,248,0.2)" : "transparent",
+                  color: currentPage === page ? "#818cf8" : "#e2e8f0",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  fontWeight: currentPage === page ? "600" : "400",
+                }}
+              >
+                {page}
+              </button>
+            )
+          )}
+
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((p) => p + 1)}
+            style={{
+              padding: "6px 14px",
+              borderRadius: "6px",
+              border: "1px solid rgba(129,140,248,0.2)",
+              background: currentPage === totalPages ? "transparent" : "rgba(129,140,248,0.1)",
+              color: currentPage === totalPages ? "#475569" : "#e2e8f0",
+              cursor: currentPage === totalPages ? "default" : "pointer",
+              fontSize: "14px",
+            }}
+          >
+            Next
+          </button>
+        </div>
+
       </div>
     </>
   );

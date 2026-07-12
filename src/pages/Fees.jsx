@@ -14,6 +14,8 @@ function Fees() {
   const [payments, setPayments] = useState([]);
   const [studentsList, setStudentsList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
   const [showModal, setShowModal] = useState(false);
   // Search filter dropdown states inside modal
   const [studentSearchInput, setStudentSearchInput] = useState("");
@@ -199,6 +201,13 @@ function Fees() {
       p.class?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
+  const totalFiltered = filteredPayments.length;
+  const totalPages = Math.ceil(totalFiltered / pageSize) || 1;
+  const paginatedPayments = filteredPayments.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
+
   // Filter student registry results list inside the modal search field
   const filteredStudentSearchOptions = studentsList.filter(
     (s) =>
@@ -229,7 +238,7 @@ function Fees() {
           type="text"
           placeholder="Search receipts by ID, name, class or code..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
           className="search-input"
         />
       </div>
@@ -259,7 +268,7 @@ function Fees() {
                 <td colSpan="8" className="empty-cell">No matched receipt lines logged.</td>
               </tr>
             ) : (
-              filteredPayments.map((p) => (
+              paginatedPayments.map((p) => (
                 <tr key={p.id}>
                   <td className="cell-receipt">{p.receipt_no}</td>
                   <td className="cell-muted">{p.student_id}</td>
@@ -269,13 +278,69 @@ function Fees() {
                   <td className="cell-amount-paid">₹{p.amount}</td>
                   <td className="cell-note">{p.note || "—"}</td>
                   <td className={p.dues > 0 ? "cell-dues" : "cell-settled-txt"}>
-                    {p.dues > 0 ? `₹${p.dues}` : "Settled ✓"}
+                    {p.dues > 0 ? `₹${p.dues}` : "Settled"}
                   </td>
                 </tr>
               ))
             )}
           </tbody>
         </table></div>
+      </div>
+
+      <div style={{
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "16px",
+        marginTop: "16px",
+        padding: "12px 0",
+      }}>
+        <div style={{ color: "#94a3b8", fontSize: "14px" }}>
+          Showing {totalFiltered === 0 ? 0 : (currentPage - 1) * pageSize + 1}–
+          {Math.min(currentPage * pageSize, totalFiltered)} of {totalFiltered} students
+        </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)}
+              style={{
+                padding: "6px 14px",
+                borderRadius: "6px",
+                border: "1px solid rgba(129,140,248,0.2)",
+                background: currentPage === 1 ? "transparent" : "rgba(129,140,248,0.1)",
+                color: currentPage === 1 ? "#475569" : "#e2e8f0",
+                cursor: currentPage === 1 ? "default" : "pointer",
+                fontSize: "14px",
+              }}
+            >
+              ◀ Previous
+            </button>
+
+            <span style={{ color: "#94a3b8", fontSize: "14px", padding: "0 8px" }}>
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => p + 1)}
+              style={{
+                padding: "6px 14px",
+                borderRadius: "6px",
+                border: "1px solid rgba(129,140,248,0.2)",
+                background: currentPage === totalPages ? "transparent" : "rgba(129,140,248,0.1)",
+                color: currentPage === totalPages ? "#475569" : "#e2e8f0",
+                cursor: currentPage === totalPages ? "default" : "pointer",
+                fontSize: "14px",
+              }}
+            >
+              Next ▶
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* MODAL BILLING POPUP WINDOW WITH EMBEDDED FILTER DROPDOWN SEARCH */}

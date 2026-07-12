@@ -81,7 +81,7 @@ function Dashboard() {
       <div className="page-header dash-header">
         <div>
           <h1 className="page-title">
-            Synapse IMS <span className="version-badge">v2.0.0</span>
+            Synapse IMS <span className="version-badge">v2.0.3</span>
           </h1>
           <p className="page-subtitle">
             Automated Working System — Real-time oversight, automated revenue,
@@ -139,7 +139,7 @@ function Dashboard() {
           <h4 className="recent-section-header">
             <span>Recently Enrolled Candidates</span>
             <span className="view-link" onClick={() => navigate("/students")}>
-              View Database →
+              View Students List →
             </span>
           </h4>
           <div className="table-container">
