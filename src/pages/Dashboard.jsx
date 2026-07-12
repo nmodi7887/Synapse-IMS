@@ -166,7 +166,7 @@ function Dashboard() {
                 <tr>
                   <th>Code ID</th>
                   <th>Student Name</th>
-                  <th>Class / Course</th>
+                  <th>Class</th>
                   <th>Status</th>
                 </tr>
               </thead>
