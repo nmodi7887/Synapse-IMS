@@ -64,3 +64,32 @@ export function validateFile(file, allowedTypes = ["image/jpeg", "image/jpg", "i
   }
   return null;
 }
+
+export function formatCurrency(value) {
+  const num = Number(value);
+  if (isNaN(num)) return "0.00";
+  return num.toFixed(2);
+}
+
+/* ========== Dropdown / Enum Options ========== */
+
+export const GENDER_OPTIONS = ["Male", "Female", "Other"];
+
+export const CATEGORY_OPTIONS = ["General", "OBC", "SC", "ST", "EWS", "Other"];
+
+export const CLASS_GROUPS = [
+  { group: "Pre-Primary", values: ["Nursery", "LKG", "UKG"] },
+  { group: "Primary", values: ["1", "2", "3", "4", "5"] },
+  { group: "Middle", values: ["6", "7", "8"] },
+  { group: "Secondary", values: ["9", "10"] },
+  { group: "Higher Secondary", values: ["11", "12"] },
+];
+
+export const ALL_CLASSES = CLASS_GROUPS.flatMap((g) => g.values);
+
+export function validateInList(value, list, fieldName) {
+  if (!list.includes(value)) {
+    return `Please select a valid ${fieldName}`;
+  }
+  return null;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabase";
+import { formatCurrency } from "../utils/validation";
 import {
   MdPeople,
   MdSchool,
@@ -110,14 +111,14 @@ function Dashboard() {
             <h3>Revenue Collected</h3>
             <MdCurrencyRupee className="stat-icon icon-green" />
           </div>
-          <p className="stat-value-green">₹{stats.totalCollected}</p>
+          <p className="stat-value-green">₹{formatCurrency(stats.totalCollected)}</p>
         </div>
         <div className="card card-stat">
           <div className="card-stat-header">
             <h3>Pending Balances</h3>
             <MdReceiptLong className="stat-icon icon-red" />
           </div>
-          <p className="stat-value-red">₹{stats.totalOutstanding}</p>
+          <p className="stat-value-red">₹{formatCurrency(stats.totalOutstanding)}</p>
         </div>
       </div>
 
@@ -207,7 +208,7 @@ function Dashboard() {
                       <td className="cell-muted">{payment.receipt_no}</td>
                       <td className="cell-name">{payment.student_name}</td>
                       <td>{payment.payment_date}</td>
-                      <td className="cell-amount">₹{payment.amount}</td>
+                      <td className="cell-amount">₹{formatCurrency(payment.amount)}</td>
                     </tr>
                   ))
                 )}

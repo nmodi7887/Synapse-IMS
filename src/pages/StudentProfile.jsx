@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "../services/supabase";
+import { formatCurrency } from "../utils/validation";
 
 function StudentProfile() {
   const { id } = useParams();
@@ -120,15 +121,15 @@ function StudentProfile() {
           <div className="fee-info">
             <div className="fee-row">
               <span>Monthly Fee</span>
-              <strong>₹{monthlyFee}</strong>
+              <strong>₹{formatCurrency(monthlyFee)}</strong>
             </div>
             <div className="fee-row">
               <span>Paid</span>
-              <strong>₹{paidFee}</strong>
+              <strong>₹{formatCurrency(paidFee)}</strong>
             </div>
             <div className="fee-row">
               <span>Due</span>
-              <strong className="due-text" style={{ color: dueFee > 0 ? "#ff4d4f" : "inherit" }}>₹{dueFee}</strong>
+              <strong className="due-text" style={{ color: dueFee > 0 ? "#ff4d4f" : "inherit" }}>₹{formatCurrency(dueFee)}</strong>
             </div>
             <div className="fee-row">
               <span>Status</span>
@@ -182,9 +183,9 @@ function StudentProfile() {
           <tbody>
             <tr>
               <td>{currentMonthName}</td>
-              <td>₹{monthlyFee}</td>
-              <td>₹{paidFee}</td>
-              <td style={{ color: dueFee > 0 ? "#ff4d4f" : "inherit" }}>₹{dueFee}</td>
+              <td>₹{formatCurrency(monthlyFee)}</td>
+              <td>₹{formatCurrency(paidFee)}</td>
+              <td style={{ color: dueFee > 0 ? "#ff4d4f" : "inherit" }}>₹{formatCurrency(dueFee)}</td>
               <td>
                 <span className={`status ${statusClass}`}>{statusText}</span>
               </td>

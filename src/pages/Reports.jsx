@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../services/supabase";
 import SecureNumberInput from "../components/SecureNumberInput";
+import { formatCurrency } from "../utils/validation";
 import {
   MdSearch,
   MdArrowDropDown,
@@ -217,11 +218,11 @@ function Reports() {
                   <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Student Name</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">${student.name || "—"}</td></tr>
                   <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Father's Name</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">${student.father_name || "—"}</td></tr>
                   ${demandForMonth ? `<tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">For Month</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">${demandForMonth}</td></tr>` : ""}
-                  <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Monthly Fee</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${sMonthlyFee.toFixed(2)}</td></tr>
-                  <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">${otherFeeLabel}</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${sOtherFee.toFixed(2)}</td></tr>
-                  <tr style="font-weight:bold;"><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">Net Payable Fee</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${sNetPayable.toFixed(2)}</td></tr>
-                  <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Back Dues</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${sBackDues.toFixed(2)}</td></tr>
-                  <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Total Fee Payable</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${sTotalPayable.toFixed(2)}</td></tr>
+                  <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Monthly Fee</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${formatCurrency(sMonthlyFee)}</td></tr>
+                  <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">${otherFeeLabel}</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${formatCurrency(sOtherFee)}</td></tr>
+                  <tr style="font-weight:bold;"><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">Net Payable Fee</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${formatCurrency(sNetPayable)}</td></tr>
+                  <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Back Dues</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${formatCurrency(sBackDues)}</td></tr>
+                  <tr><th style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:normal;font-size:15px;">Total Fee Payable</th><td style="padding:9px 16px;border:1.5px solid #000;text-align:left;font-weight:bold;font-size:15px;">₹ ${formatCurrency(sTotalPayable)}</td></tr>
                 </tbody>
               </table>
               <div style="background-color:#a4bdf2;text-align:center;padding:8px;font-size:15px;border:1.5px solid #7395e3;max-width:544px;margin:14px auto 0;">
@@ -353,6 +354,18 @@ function Reports() {
         }
         .glow-btn:hover::after {
           opacity: 1;
+        }
+        .demand-collapsible {
+          max-height: 0;
+          opacity: 0;
+          overflow: hidden;
+          transition: max-height 0.35s ease, opacity 0.35s ease, margin 0.35s ease;
+          margin-top: 0;
+        }
+        .demand-expanded {
+          max-height: 500px;
+          opacity: 1;
+          margin-top: 16px;
         }
       `}</style>
 
@@ -785,152 +798,184 @@ function Reports() {
               </label>
             </div>
 
-            <strong
-              style={{
-                display: "block",
-                marginBottom: "6px",
-                fontSize: "13px",
-                color: "#94a3b8",
-              }}
-            >
-              Select Class
-            </strong>
-            <select
-              value={demandClassFilter}
-              onChange={(e) => setDemandClassFilter(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "10px 14px",
-                background: "rgba(15, 23, 42, 0.6)",
-                border: "1px solid var(--border)",
-                borderRadius: "10px",
-                color: "#fff",
-                fontSize: "13px",
-                outline: "none",
-                cursor: "pointer",
-                marginBottom: "16px",
-              }}
-            >
-              <option value="">Select a class</option>
-              {studentClassOptions.map((cls) => (
-                <option key={cls} value={cls}>
-                  {cls}
-                </option>
-              ))}
-            </select>
+            <div style={{ display: "flex", gap: "10px", alignItems: "flex-end" }}>
+              <div style={{ flex: 1 }}>
+                <strong
+                  style={{
+                    display: "block",
+                    marginBottom: "6px",
+                    fontSize: "13px",
+                    color: "#94a3b8",
+                  }}
+                >
+                  Select Class
+                </strong>
+                <select
+                  value={demandClassFilter}
+                  onChange={(e) => setDemandClassFilter(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 14px",
+                    background: "rgba(15, 23, 42, 0.6)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "10px",
+                    color: "#fff",
+                    fontSize: "13px",
+                    outline: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="">Select a class</option>
+                  {studentClassOptions.map((cls) => (
+                    <option key={cls} value={cls}>
+                      {cls}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {demandClassFilter && (
+                <button
+                  onClick={() => {
+                    setDemandClassFilter("");
+                    setDemandOtherFee("");
+                    setDemandOtherFeeNote("");
+                    setDemandForMonth("");
+                  }}
+                  style={{
+                    padding: "10px 14px",
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "10px",
+                    color: "#94a3b8",
+                    fontSize: "12px",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                    transition: "all 0.2s",
+                    flexShrink: 0,
+                  }}
+                  title="Cancel"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
 
-            <strong
-              style={{
-                display: "block",
-                marginBottom: "6px",
-                fontSize: "13px",
-                color: "#94a3b8",
-              }}
-            >
-              Other Fee (₹)
-            </strong>
-            <SecureNumberInput
-              placeholder="e.g. 500"
-              value={demandOtherFee}
-              onChange={(e) => setDemandOtherFee(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "10px 14px",
-                background: "rgba(15, 23, 42, 0.6)",
-                border: "1px solid var(--border)",
-                borderRadius: "10px",
-                color: "#fff",
-                fontSize: "13px",
-                outline: "none",
-                marginBottom: "10px",
-                boxSizing: "border-box",
-              }}
-            />
+            <div className={`demand-collapsible ${demandClassFilter ? "demand-expanded" : ""}`}>
+              <div>
+                <strong
+                  style={{
+                    display: "block",
+                    marginBottom: "6px",
+                    fontSize: "13px",
+                    color: "#94a3b8",
+                  }}
+                >
+                  Other Fee (₹)
+                </strong>
+                <SecureNumberInput
+                  placeholder="e.g. 500"
+                  value={demandOtherFee}
+                  onChange={(e) => setDemandOtherFee(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 14px",
+                    background: "rgba(15, 23, 42, 0.6)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "10px",
+                    color: "#fff",
+                    fontSize: "13px",
+                    outline: "none",
+                    marginBottom: "10px",
+                    boxSizing: "border-box",
+                  }}
+                />
 
-            <strong
-              style={{
-                display: "block",
-                marginBottom: "6px",
-                fontSize: "13px",
-                color: "#94a3b8",
-              }}
-            >
-              What is this Other Fee for?
-            </strong>
-            <input
-              type="text"
-              placeholder='e.g. Books, Supplies, Uniform...'
-              value={demandOtherFeeNote}
-              onChange={(e) => setDemandOtherFeeNote(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "10px 14px",
-                background: "rgba(15, 23, 42, 0.6)",
-                border: "1px solid var(--border)",
-                borderRadius: "10px",
-                color: "#fff",
-                fontSize: "13px",
-                outline: "none",
-                marginBottom: "16px",
-                boxSizing: "border-box",
-              }}
-            />
+                <strong
+                  style={{
+                    display: "block",
+                    marginBottom: "6px",
+                    fontSize: "13px",
+                    color: "#94a3b8",
+                  }}
+                >
+                  What is this Other Fee for?
+                </strong>
+                <input
+                  type="text"
+                  placeholder='e.g. Books, Supplies, Uniform...'
+                  value={demandOtherFeeNote}
+                  onChange={(e) => setDemandOtherFeeNote(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 14px",
+                    background: "rgba(15, 23, 42, 0.6)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "10px",
+                    color: "#fff",
+                    fontSize: "13px",
+                    outline: "none",
+                    marginBottom: "16px",
+                    boxSizing: "border-box",
+                  }}
+                />
 
-            <strong
-              style={{
-                display: "block",
-                marginBottom: "6px",
-                fontSize: "13px",
-                color: "#94a3b8",
-              }}
-            >
-              For Month
-            </strong>
-            <input
-              type="text"
-              placeholder="e.g. June 2026"
-              value={demandForMonth}
-              onChange={(e) => setDemandForMonth(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "10px 14px",
-                background: "rgba(15, 23, 42, 0.6)",
-                border: "1px solid var(--border)",
-                borderRadius: "10px",
-                color: "#fff",
-                fontSize: "13px",
-                outline: "none",
-                marginBottom: "16px",
-                boxSizing: "border-box",
-              }}
-            />
+                <strong
+                  style={{
+                    display: "block",
+                    marginBottom: "6px",
+                    fontSize: "13px",
+                    color: "#94a3b8",
+                  }}
+                >
+                  For Month
+                </strong>
+                <input
+                  type="text"
+                  placeholder="e.g. June 2026"
+                  value={demandForMonth}
+                  onChange={(e) => setDemandForMonth(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "10px 14px",
+                    background: "rgba(15, 23, 42, 0.6)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "10px",
+                    color: "#fff",
+                    fontSize: "13px",
+                    outline: "none",
+                    marginBottom: "16px",
+                    boxSizing: "border-box",
+                  }}
+                />
 
-            <button
-              onClick={handlePrintDemandBill}
-              disabled={!demandClassFilter}
-              className="glow-btn"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "11px 22px",
-                background: demandClassFilter
-                  ? "linear-gradient(135deg, #f59e0b, #d97706)"
-                  : "rgba(255,255,255,0.05)",
-                color: demandClassFilter ? "#ffffff" : "#64748b",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "14px",
-                fontWeight: "600",
-                cursor: demandClassFilter ? "pointer" : "not-allowed",
-                boxShadow: demandClassFilter
-                  ? "0 4px 12px rgba(245, 158, 11, 0.3)"
-                  : "none",
-                whiteSpace: "nowrap",
-              }}
-            >
-              <MdPrint style={{ fontSize: "18px" }} /> Generate Demand Bill
-            </button>
+                <button
+                  onClick={handlePrintDemandBill}
+                  disabled={!demandClassFilter || !demandForMonth.trim()}
+                  className="glow-btn"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "11px 22px",
+                    background: demandClassFilter && demandForMonth.trim()
+                      ? "linear-gradient(135deg, #f59e0b, #d97706)"
+                      : "rgba(255,255,255,0.05)",
+                    color: demandClassFilter && demandForMonth.trim() ? "#ffffff" : "#64748b",
+                    border: "none",
+                    borderRadius: "8px",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    cursor: demandClassFilter && demandForMonth.trim() ? "pointer" : "not-allowed",
+                    boxShadow: demandClassFilter && demandForMonth.trim()
+                      ? "0 4px 12px rgba(245, 158, 11, 0.3)"
+                      : "none",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <MdPrint style={{ fontSize: "18px" }} /> Generate Demand Bill
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1171,7 +1216,7 @@ function Reports() {
                     fontSize: "15px",
                   }}
                 >
-                  ₹ {monthlyFee.toFixed(2)}
+                  ₹ {formatCurrency(monthlyFee)}
                 </td>
               </tr>
 
@@ -1192,7 +1237,7 @@ function Reports() {
                     fontSize: "15px",
                   }}
                 >
-                  ₹ {otherFee.toFixed(2)}
+                  ₹ {formatCurrency(otherFee)}
                 </td>
               </tr>
 
@@ -1215,7 +1260,7 @@ function Reports() {
                     fontWeight: "bold",
                   }}
                 >
-                  ₹ {(monthlyFee + otherFee).toFixed(2)}
+                  ₹ {formatCurrency(monthlyFee + otherFee)}
                 </td>
               </tr>
 
@@ -1236,7 +1281,7 @@ function Reports() {
                     fontSize: "15px",
                   }}
                 >
-                  ₹ {totalPaid.toFixed(2)}
+                  ₹ {formatCurrency(totalPaid)}
                 </td>
               </tr>
               <tr>
@@ -1256,7 +1301,7 @@ function Reports() {
                     fontSize: "15px",
                   }}
                 >
-                  ₹ {backDues.toFixed(2)}
+                  ₹ {formatCurrency(backDues)}
                 </td>
               </tr>
             </tbody>

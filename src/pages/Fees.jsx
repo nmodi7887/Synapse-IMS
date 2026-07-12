@@ -8,7 +8,7 @@ import {
   MdArrowDropDown,
 } from "react-icons/md";
 import { useToast } from "../components/Toast";
-import { validateAmount, sanitize } from "../utils/validation";
+import { validateAmount, sanitize, formatCurrency } from "../utils/validation";
 import SecureNumberInput from "../components/SecureNumberInput";
 
 function Fees() {
@@ -282,10 +282,10 @@ function Fees() {
                   <td style={{ fontWeight: "500" }}>{p.student_name}</td>
                   <td>{p.class || "—"}</td>
                   <td>{p.payment_date}</td>
-                  <td className="cell-amount-paid">₹{p.amount}</td>
+                  <td className="cell-amount-paid">₹{formatCurrency(p.amount)}</td>
                   <td className="cell-note">{p.note || "—"}</td>
                   <td className={p.dues > 0 ? "cell-dues" : "cell-settled-txt"}>
-                    {p.dues > 0 ? `₹${p.dues}` : "Settled"}
+                    {p.dues > 0 ? `₹${formatCurrency(p.dues)}` : "Settled"}
                   </td>
                 </tr>
               ))
@@ -406,7 +406,7 @@ function Fees() {
                   <strong className="form-field-label">Current Dues Owed</strong>
                   <input
                     type="text"
-                    value={formData.student_id ? `₹${selectedStudentDues}` : "—"}
+                    value={formData.student_id ? `₹${formatCurrency(selectedStudentDues)}` : "—"}
                     readOnly
                     className={`field-readonly ${selectedStudentDues > 0 ? "field-dues" : "field-settled"}`}
                   />

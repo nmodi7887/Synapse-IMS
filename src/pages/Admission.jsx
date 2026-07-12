@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdCalendarMonth } from "react-icons/md";
 import { supabase } from "../services/supabase";
-import { sanitize, validateRequired, validatePhone, validateFile, checkDuplicate } from "../utils/validation";
+import { sanitize, validateRequired, validatePhone, validateFile, checkDuplicate, GENDER_OPTIONS, CATEGORY_OPTIONS, ALL_CLASSES, validateInList } from "../utils/validation";
 import { useToast } from "../components/Toast";
 import SecureNumberInput from "../components/SecureNumberInput";
 
@@ -102,6 +102,16 @@ function Admission() {
     }
   };
 
+  function normalizeClass(raw) {
+    const trimmed = raw.trim();
+    if (!trimmed) return trimmed;
+    const lower = trimmed.toLowerCase();
+    if (lower === "nursery") return "Nursery";
+    if (lower === "lkg") return "LKG";
+    if (lower === "ukg") return "UKG";
+    return trimmed;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -114,8 +124,11 @@ function Admission() {
     const sMobile = sanitize(formData.mobile_no);
     const sFatherMobile = sanitize(formData.father_mobile_no);
     const sAddress = sanitize(formData.address);
-    const sCourse = sanitize(formData.course);
+    const sCourse = normalizeClass(sanitize(formData.course));
     const sRollNo = sanitize(formData.roll_no);
+
+    // Update formData so the normalized value is displayed
+    setFormData((prev) => ({ ...prev, course: sCourse }));
 
     const fieldErrors = [
       validateRequired(sName, "Student Name"),
@@ -141,6 +154,24 @@ function Admission() {
         showToast(fPhoneErr, "error");
         return;
       }
+    }
+
+    const genderErr = validateInList(sGender, GENDER_OPTIONS, "Gender");
+    if (genderErr) {
+      showToast(genderErr, "error");
+      return;
+    }
+
+    const categoryErr = validateInList(sCategory, CATEGORY_OPTIONS, "Category");
+    if (categoryErr) {
+      showToast(categoryErr, "error");
+      return;
+    }
+
+    const classErr = validateInList(sCourse, ALL_CLASSES, "Class");
+    if (classErr) {
+      showToast(classErr, "error");
+      return;
     }
 
     setLoading(true);
@@ -362,25 +393,32 @@ function Admission() {
               </div>
             </div>
             <div>
-              <strong>Gender</strong>
-              <input
-                type="text"
+              <strong>Gender *</strong>
+              <select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
                 required
-                placeholder="Male / Female / Others"
-              />
+              >
+                <option value="">-- Select Gender --</option>
+                {GENDER_OPTIONS.map((g) => (
+                  <option key={g} value={g}>{g}</option>
+                ))}
+              </select>
             </div>
             <div>
-              <strong>Category</strong>
-              <input
-                type="text"
+              <strong>Category *</strong>
+              <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                placeholder="General / OBC / SC / ST"
-              />
+                required
+              >
+                <option value="">-- Select Category --</option>
+                {CATEGORY_OPTIONS.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
@@ -436,13 +474,14 @@ function Admission() {
           <h3>Academic Information</h3>
           <div className="profile-grid">
             <div>
-              <strong>Class</strong>
+              <strong>Class *</strong>
               <input
                 type="text"
                 name="course"
                 value={formData.course}
                 onChange={handleChange}
                 required
+                placeholder="e.g. Nursery, LKG, UKG, 1–12"
               />
             </div>
             <div>

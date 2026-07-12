@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../services/supabase";
 import { useToast } from "../components/Toast";
-import { sanitize, validateRequired, validatePhone, validateNumber } from "../utils/validation";
+import { sanitize, validateRequired, validatePhone, validateNumber, formatCurrency } from "../utils/validation";
 import SecureNumberInput from "../components/SecureNumberInput";
 
 function Teachers() {
@@ -246,7 +246,7 @@ function Teachers() {
                 <td>{teacher.name}</td>
                 <td>{teacher.subject}</td>
                 <td>{teacher.phone}</td>
-                <td>₹{teacher.salary}</td>
+                <td>₹{formatCurrency(teacher.salary)}</td>
                 <td>
                   <button
                     className="edit-btn"
