@@ -21,19 +21,20 @@ table {
 th {
   background: rgba(15, 23, 42, 0.8);
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   text-align: left;
-  padding: 18px 24px;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }
 
 td {
-  padding: 18px 24px;
+  padding: 12px 14px;
   color: #e2e8f0;
-  font-size: 14px;
+  font-size: 13px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
@@ -81,6 +82,8 @@ tr:hover {
 .cell-receipt {
   color: #a5b4fc;
   font-weight: 600;
+  white-space: nowrap;
+  font-size: 12px;
 }
 
 .cell-amount-paid {

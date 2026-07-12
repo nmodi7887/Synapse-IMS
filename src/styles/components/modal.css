@@ -1,3 +1,16 @@
+.modal-overlay-fees {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.7);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -66,20 +79,17 @@
 
 .modal-card-inner {
   width: 100%;
-  max-width: 520px;
+  max-width: 460px;
   background: #111827;
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px;
+  border-radius: 14px;
+  padding: 20px;
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.75);
-  overflow: visible;
-  max-height: 90vh;
-  overflow-y: auto;
 }
 
 @media (max-width: 640px) {
   .modal-card-inner {
-    padding: 20px;
+    padding: 14px;
   }
 }
 
@@ -87,29 +97,29 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .modal-title {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
   color: #fff;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .modal-close {
   color: var(--muted);
   cursor: pointer;
-  font-size: 22px;
+  font-size: 20px;
   flex-shrink: 0;
 }
 
 .modal-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 8px;
 }
 
 @media (max-width: 640px) {
@@ -121,5 +131,42 @@
 .modal-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 10px;
+}
+
+.modal-form input {
+  width: 100%;
+  padding: 8px 12px;
+  background: #1e293b;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.modal-form input:focus {
+  border-color: #818cf8;
+}
+
+.modal-form input::placeholder {
+  color: #475569;
+}
+
+.modal-form .btn,
+.modal-form .btn-secondary {
+  padding: 7px 14px;
+  font-size: 13px;
+}
+
+.modal-form input[type="number"]::-webkit-inner-spin-button,
+.modal-form input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.modal-form input[type="number"] {
+  -moz-appearance: textfield;
 }

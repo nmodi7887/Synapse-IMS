@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "../services/supabase";
 import { useNavigate } from "react-router-dom";
 import {
   MdAddCard,
   MdReceiptLong,
-  MdSearch,
   MdClose,
   MdArrowDropDown,
 } from "react-icons/md";
@@ -24,8 +23,6 @@ function Fees() {
   const [otherFeeAmount, setOtherFeeAmount] = useState("");
   const [otherFeeNote, setOtherFeeNote] = useState("");
   const navigate = useNavigate();
-
-  // Modal Form State Tracking
   const [formData, setFormData] = useState({
     student_id: "",
     student_name: "",
@@ -34,12 +31,23 @@ function Fees() {
     amount: "",
   });
 
+  const searchRef = useRef(null);
+
   useEffect(() => {
     fetchPayments();
     fetchStudentsDirectory();
   }, []);
 
-  // 1. Fetch historical receipts ledger entries
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   async function fetchPayments() {
     try {
       setLoading(true);
@@ -57,7 +65,6 @@ function Fees() {
     }
   }
 
-  // 2. Fetch all student ledger records to enable dynamic autocomplete filtering
   async function fetchStudentsDirectory() {
     try {
       const { data, error } = await supabase
@@ -71,8 +78,6 @@ function Fees() {
       console.error("Error loading auto-complete references:", err);
     }
   }
-
-  // 3. Dynamic Selection Handler (Calculates existing dues on-the-fly)
   const handleSelectStudent = (student) => {
     const mFee = Number(student.total_fee || 0);
     const oFee = Number(student.other_fee || 0);
@@ -102,7 +107,6 @@ function Fees() {
     setOtherFeeNote("");
   };
 
-  // 4. Double-table secure transaction billing pipeline
   const addPayment = async (e) => {
     e.preventDefault();
     if (!formData.student_id || !formData.amount) {
@@ -138,8 +142,6 @@ function Fees() {
       const updatedTotalPaid = Number(student.total_paid || 0) + paymentAmount;
       const calculatedDuesRemaining = Math.max(0, expectedSoFar - updatedTotalPaid);
       const newStatus = calculatedDuesRemaining <= 0 ? "Paid" : "Due";
-
-      // A. Push receipt row entry to Payments History Table
       const paymentRecord = {
         student_id: formData.student_id,
         student_name: formData.student_name,
@@ -154,8 +156,6 @@ function Fees() {
       const { error: paymentErr } = await supabase.from("payments").insert([paymentRecord]);
 
       if (paymentErr) throw paymentErr;
-
-      // B. Synchronize ledger updates back to core Students Directory Table
       const { error: studentUpdateErr } = await supabase
         .from("students")
         .update({
@@ -169,9 +169,8 @@ function Fees() {
 
       alert("Transaction saved! Master ledger accounts balanced.");
       setShowModal(false);
-
-      // Reset input layout values safely
-      setFormData({
+      
+      setFormData({     // Reset input layout values safely
         student_id: "",
         student_name: "",
         class: "",
@@ -183,7 +182,7 @@ function Fees() {
       setOtherFeeAmount("");
       setOtherFeeNote("");
 
-      // Refresh backend snapshots
+      // Refresh backend
       fetchPayments();
       fetchStudentsDirectory();
     } catch (error) {
@@ -192,7 +191,6 @@ function Fees() {
     }
   };
 
-  // Filter history logs for main directory grid
   const filteredPayments = payments.filter(
     (p) =>
       p.student_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -207,8 +205,6 @@ function Fees() {
     (currentPage - 1) * pageSize,
     currentPage * pageSize,
   );
-
-  // Filter student registry results list inside the modal search field
   const filteredStudentSearchOptions = studentsList.filter(
     (s) =>
       s.name?.toLowerCase().includes(studentSearchInput.toLowerCase()) ||
@@ -218,8 +214,7 @@ function Fees() {
 
   return (
     <>
-      {/* SECTION TOP MODULE HEADER WITH ALIGNED TOP-RIGHT BUTTON */}
-
+      
       <div className="page-header page-header-between">
         <div>
           <h1 className="page-title">Fees & Accounts Workspace</h1>
@@ -232,18 +227,15 @@ function Fees() {
       </div>
 
       {/* FILTER SEARCH FIELD FOR LEDGER TABLE */}
-      <div className="search-bar">
-        <MdSearch className="search-icon" />
+      <div className="search-box">
         <input
           type="text"
           placeholder="Search receipts by ID, name, class or code..."
           value={searchQuery}
           onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-          className="search-input"
         />
       </div>
-
-      {/* LEDGER TRANSACTION HISTORICAL RECORDS */}
+      
       <div className="table-container">
         <div className="overflow-x-auto"><table>
           <thead>
@@ -355,15 +347,14 @@ function Fees() {
             </div>
 
             <form className="modal-form" onSubmit={addPayment}>
-              <div className="field-group">
+              <div className="field-group" ref={searchRef}>
                 <strong className="field-label">Search Student Name, ID or Class *</strong>
                 <div className="search-field-wrap">
                   <input
                     type="text"
                     placeholder="Type name or code to filter search..."
                     value={studentSearchInput}
-                    onChange={(e) => { setStudentSearchInput(e.target.value); setShowDropdown(true); }}
-                    onFocus={() => setShowDropdown(true)}
+                    onChange={(e) => { setStudentSearchInput(e.target.value); if (e.target.value.trim()) setShowDropdown(true); else setShowDropdown(false); }}
                     required
                     className="field-input"
                   />
