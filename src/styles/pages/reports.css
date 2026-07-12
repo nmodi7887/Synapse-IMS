@@ -1,0 +1,33 @@
+.reports-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.billing-columns {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.billing-card {
+  position: relative;
+  flex: 0 1 400px;
+  padding: 24px;
+}
+
+@media (max-width: 1024px) {
+  .billing-card {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .reports-wrapper {
+    padding: 12px;
+  }
+  .billing-card {
+    padding: 16px;
+  }
+}
