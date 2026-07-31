@@ -59,7 +59,7 @@ function Fees() {
       const { data, error } = await supabase
         .from("payments")
         .select("*")
-        .order("id", { ascending: false });
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       setPayments(data || []);
