@@ -43,7 +43,7 @@ function Dashboard() {
       const { data: paymentsData } = await supabase
         .from("payments")
         .select("*")
-        .order("id", { ascending: false });
+        .order("created_at", { ascending: false });
 
       const totalStuds = studentsData ? studentsData.length : 0;
       const totalTechs = teachersData ? teachersData.length : 0;
