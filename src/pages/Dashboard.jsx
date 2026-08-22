@@ -99,7 +99,7 @@ function Dashboard() {
       <div className="page-header dash-header">
         <div>
           <h1 className="page-title">
-            Synapse IMS <span className="version-badge">v2.0.3</span>
+            Synapse IMS <span className="version-badge">v0.1.1</span>
           </h1>
           <p className="page-subtitle">
             Automated Working System — Real-time oversight, automated revenue,
