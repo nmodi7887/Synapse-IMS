@@ -139,7 +139,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <h3 className="section-title">System Command Shortcuts</h3>
+      <h3 className="section-title">Shortcuts</h3>
       <div className="shortcuts-grid">
         <button className="theme-btn shortcut-btn" onClick={() => navigate("/admission")}>
           <MdPersonAdd /> Start New Admission

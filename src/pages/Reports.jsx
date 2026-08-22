@@ -65,7 +65,16 @@ function Reports() {
 
   const studentClassOptions = [
     ...new Set(studentsList.map((s) => s.class).filter(Boolean)),
-  ].sort();
+  ].sort((a, b) => {
+    const aTrim = String(a).trim();
+    const bTrim = String(b).trim();
+    const aNum = /^\d+$/.test(aTrim);
+    const bNum = /^\d+$/.test(bTrim);
+    if (aNum && bNum) return Number(aTrim) - Number(bTrim);
+    if (aNum) return 1;
+    if (bNum) return -1;
+    return aTrim.localeCompare(bTrim);
+  });
 
   const filteredStudentSearchOptions = studentsList.filter(
     (s) =>
