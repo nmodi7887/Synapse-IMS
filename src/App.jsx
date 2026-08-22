@@ -12,6 +12,7 @@ import Admission from "./pages/Admission";
 import Teachers from "./pages/Teachers";
 import Fees from "./pages/Fees";
 import Reports from "./pages/Reports";
+import Promotion from "./pages/Promotion";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                   <Route path="/admission" element={<Admission />} />
                   <Route path="/admission/:id" element={<Admission />} />
                   <Route path="/teachers" element={<Teachers />} />
+                  <Route path="/promotion" element={<Promotion />} />
                   <Route path="/fees" element={<Fees />} />
                   <Route path="/reports" element={<Reports />} />
                 </Routes>

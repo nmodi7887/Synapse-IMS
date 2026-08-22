@@ -7,6 +7,7 @@ import {
   MdSchool,
   MdCurrencyRupee,
   MdAnalytics,
+  MdTrendingUp,
   MdMenu,
   MdClose,
 } from "react-icons/md";
@@ -95,6 +96,16 @@ function MainLayout({ children }) {
           >
             <MdSchool />
             <span className="nav-text">Teachers</span>
+          </Link>
+          <Link
+            to="/promotion"
+            className={`nav-link ${
+              location.pathname.startsWith("/promotion") ? "active" : ""
+            }`}
+            onClick={() => setIsMobileOpen(false)}
+          >
+            <MdTrendingUp />
+            <span className="nav-text">Student Promotion</span>
           </Link>
           <Link
             to="/fees"

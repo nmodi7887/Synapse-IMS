@@ -1,0 +1,185 @@
+/* ========== Student Promotion Page ========== */
+
+.promo-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.promo-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(30, 41, 59, 0.7),
+    rgba(17, 24, 39, 0.9)
+  );
+  border: 1px solid rgba(129, 140, 248, 0.15);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.promo-panel h3 {
+  margin: 0 0 16px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Inputs & selects mirror .card input/.card select from cards.css */
+.promo-panel input,
+.promo-select-wrap select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 14px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.promo-panel input:focus,
+.promo-select-wrap select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--border-focus);
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.promo-panel input::placeholder {
+  color: #475569;
+}
+
+.promo-select-wrap {
+  position: relative;
+}
+
+.promo-select-wrap select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 38px;
+}
+
+.promo-select-wrap select option {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.promo-select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #818cf8;
+  pointer-events: none;
+  font-size: 22px;
+}
+
+.promo-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.promo-details.promo-form-gap {
+  gap: 14px;
+}
+
+.promo-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.promo-label {
+  color: #94a3b8;
+}
+
+.promo-value {
+  color: #e2e8f0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.promo-old-fee {
+  opacity: 0.7;
+}
+
+.promo-due-value {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 6px 0 10px;
+}
+
+.promo-btn-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.promo-note {
+  color: #94a3b8;
+  font-size: 12px;
+  margin: 4px 0 0;
+  line-height: 1.5;
+}
+
+.promo-hint {
+  color: #64748b;
+  font-size: 13px;
+  margin: 10px 0 0;
+}
+
+/* Student picker dropdown: opens on click, scrollable, type-to-filter */
+.promo-dropdown {
+  max-height: 280px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(129, 140, 248, 0.4) transparent;
+}
+
+.promo-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.promo-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(129, 140, 248, 0.35);
+  border-radius: 4px;
+}
+
+.promo-option-name {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.promo-option-meta {
+  color: #a5b4fc;
+  font-size: 12px;
+}
+
+.promo-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .promo-panel {
+    padding: 16px;
+  }
+
+  .promo-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .promo-value {
+    text-align: left;
+  }
+}

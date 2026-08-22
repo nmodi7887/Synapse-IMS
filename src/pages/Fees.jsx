@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "../services/supabase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   MdAddCard,
   MdReceiptLong,
@@ -28,6 +28,7 @@ function Fees() {
   const [otherFeeAmount, setOtherFeeAmount] = useState("");
   const [otherFeeNote, setOtherFeeNote] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     student_id: "",
     student_name: "",
@@ -111,6 +112,19 @@ function Fees() {
     setOtherFeeAmount("");
     setOtherFeeNote("");
   };
+
+  useEffect(() => {
+    const st = location.state;
+    if (!st?.openCollect || !st.student) return;
+    const timer = setTimeout(() => {
+      const match = studentsList.find((s) => s.student_id === st.student.student_id);
+      if (!match) return;
+      handleSelectStudent(match);
+      setShowModal(true);
+    }, 0);
+    navigate("/fees", { replace: true, state: null });
+    return () => clearTimeout(timer);
+  }, [studentsList, location.state, navigate]);
 
   const addPayment = async (e) => {
     e.preventDefault();
