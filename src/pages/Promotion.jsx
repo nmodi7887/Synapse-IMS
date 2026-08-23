@@ -398,14 +398,15 @@ function Promotion() {
               </div>
               <div className="promo-row">
                 <span className="promo-label">Monthly Fee</span>
-                <strong
-                  className={`promo-value ${feeChanged ? "promo-old-fee" : ""}`}
-                  style={{
-                    textDecoration: feeChanged ? "line-through" : "none",
-                  }}
-                >
-                  ₹{formatCurrency(currentFee)}{feeChanged ? ` → ₹${formatCurrency(newFeeNum)}` : ""}
-                </strong>
+                {feeChanged ? (
+                  <strong className="promo-value">
+                    <span className="promo-fee-old">₹{formatCurrency(currentFee)}</span>
+                    <span className="promo-fee-arrow">→</span>
+                    <span className="promo-fee-new">₹{formatCurrency(newFeeNum)}</span>
+                  </strong>
+                ) : (
+                  <strong className="promo-value">₹{formatCurrency(currentFee)}</strong>
+                )}
               </div>
               <div className="promo-row">
                 <span className="promo-label">Previous Due</span>
@@ -421,7 +422,7 @@ function Promotion() {
                 <strong className="promo-value" style={{ color: "#818cf8" }}>{summaryAction}</strong>
               </div>
               {feeChanged && (
-                <p className="promo-note">
+                <p className="promo-explain-note">
                   A rate adjustment is applied automatically so previously accrued fees are not re-charged at the new rate.
                 </p>
               )}
