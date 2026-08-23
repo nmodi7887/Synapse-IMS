@@ -249,13 +249,13 @@ function Promotion() {
           <div className="search-field-wrap">
             <input
               type="text"
-              placeholder={loading ? "Loading students..." : "Click to view all students, or type to filter by name, ID or class..."}
+              placeholder={loading ? "Loading students..." : "Type name or ID to filter search..."}
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
-                setShowDropdown(true);
+                if (e.target.value.trim()) setShowDropdown(true);
+                else setShowDropdown(false);
               }}
-              onFocus={() => setShowDropdown(true)}
               className="field-input"
               disabled={loading}
             />
@@ -281,10 +281,6 @@ function Promotion() {
             </div>
           )}
         </div>
-
-        {!selected && (
-          <p className="promo-hint"></p>
-        )}
       </div>
 
       {selected && (

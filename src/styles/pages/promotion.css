@@ -191,6 +191,12 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 900px) {
+  .promo-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
   .promo-panel {
     padding: 16px;
@@ -204,5 +210,18 @@
 
   .promo-value {
     text-align: left;
+  }
+
+  .promo-actions,
+  .promo-btn-row {
+    width: 100%;
+  }
+
+  .promo-actions .btn,
+  .promo-actions .btn-secondary,
+  .promo-btn-row .btn,
+  .promo-btn-row .btn-secondary {
+    flex: 1 1 auto;
+    min-width: 130px;
   }
 }
