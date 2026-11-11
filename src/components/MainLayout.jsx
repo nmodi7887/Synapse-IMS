@@ -12,6 +12,7 @@ import {
   MdClose,
 } from "react-icons/md";
 import { supabase } from "../services/supabase";
+import Footer from "./Footer";
 
 function MainLayout({ children }) {
   const location = useLocation();
@@ -190,7 +191,10 @@ function MainLayout({ children }) {
         </div>
       </aside>
 
-      <main className="main-content">{children}</main>
+      <main className="main-content">
+        {children}
+        <Footer />
+      </main>
     </div>
   );
 }
