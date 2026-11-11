@@ -235,7 +235,7 @@ function Promotion() {
         <div>
           <h1 className="page-title">
             <MdTrendingUp style={{ color: "#818cf8", verticalAlign: "-4px", marginRight: "8px" }} />
-            Student Promotion
+            Promotion
           </h1>
           <p className="page-subtitle">
             Promote students to their next class and manage previous outstanding dues.

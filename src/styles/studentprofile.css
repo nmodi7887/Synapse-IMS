@@ -132,35 +132,34 @@
 .status {
   display: inline-flex;
   align-items: center;
-  height: 22px;
-  padding: 0 10px;
+  padding: 3px 10px;
   border: 1px solid transparent;
-  border-radius: var(--radius-pill);
+  border-radius: 9999px;
   font-size: 11px;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.4;
   white-space: nowrap;
 }
 
 .status.paid,
 .status-badge.paid {
-  background: var(--status-paid-bg);
-  color: var(--status-paid-text);
-  border-color: var(--status-paid-border);
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #a7f3d0;
 }
 
 .status.partial,
 .status-badge.partial {
-  background: var(--status-due-bg);
-  color: var(--status-due-text);
-  border-color: var(--status-due-border);
+  background: #fffbeb;
+  color: #d97706;
+  border-color: #fde68a;
 }
 
 .status.unpaid,
 .status-badge.unpaid {
-  background: var(--status-danger-bg);
-  color: var(--status-danger-text);
-  border-color: var(--status-danger-border);
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
 }
 
 .ledger-card {

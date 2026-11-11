@@ -1,61 +1,71 @@
 /* ============================================================
-   Status badges — pill, high-contrast, no glow
+   Status badges — soft clinical pills, no glow
    ============================================================ */
 
 .status-paid,
-.status-due {
+.status-due,
+.status-danger,
+.status-overdue {
   display: inline-flex;
   align-items: center;
-  height: 22px;
-  padding: 0 10px;
+  padding: 3px 10px;
   border: 1px solid transparent;
-  border-radius: var(--radius-pill);
+  border-radius: 9999px;
   font-size: 11px;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.4;
   letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
 .status-paid {
-  background: var(--status-paid-bg);
-  color: var(--status-paid-text);
-  border-color: var(--status-paid-border);
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #a7f3d0;
 }
 
 .status-due {
-  background: var(--status-due-bg);
-  color: var(--status-due-text);
-  border-color: var(--status-due-border);
+  background: #fffbeb;
+  color: #d97706;
+  border-color: #fde68a;
+}
+
+.status-danger,
+.status-overdue {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
 }
 
 /* ---------- Field-level balance indicators ---------- */
+
 .field-dues {
-  color: var(--status-due-text) !important;
+  color: #d97706 !important;
   font-family: var(--font-mono) !important;
   font-weight: 600 !important;
 }
 
 .field-settled {
-  color: var(--status-paid-text) !important;
+  color: #059669 !important;
   font-family: var(--font-mono) !important;
   font-weight: 600 !important;
 }
 
 /* ---------- Version tag ---------- */
+
 .version-badge {
   display: inline-flex;
   align-items: center;
-  height: 20px;
   margin-left: 6px;
-  padding: 0 8px;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  background: var(--bg-subtle);
-  color: var(--text-muted);
+  padding: 2px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  background: #f8fafc;
+  color: #64748b;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
+  line-height: 1.4;
   vertical-align: middle;
   white-space: nowrap;
 }

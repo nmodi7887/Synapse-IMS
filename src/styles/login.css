@@ -81,7 +81,7 @@
 .login-btn:hover {
   background: var(--accent-primary-hover);
   border-color: var(--accent-primary-hover);
-  box-shadow: 0 6px 16px -4px rgba(37, 99, 235, 0.4);
+  box-shadow: none;
 }
 
 .login-btn:focus-visible {
