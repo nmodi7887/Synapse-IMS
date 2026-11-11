@@ -8,9 +8,10 @@
 
 .student-card,
 .current-fee-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
   padding: 24px;
   box-sizing: border-box;
 }
@@ -24,8 +25,8 @@
 .student-photo {
   width: 120px;
   height: 140px;
-  border-radius: 8px;
-  background: var(--accent-gradient);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent-primary), #60a5fa);
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -33,8 +34,8 @@
   flex-shrink: 0;
   font-size: 34px;
   font-weight: 700;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-inverse);
+  border: 1px solid var(--border-subtle);
 }
 
 .photo-img {
@@ -56,7 +57,8 @@
 .student-name {
   font-size: 1.6rem;
   margin: 0 0 4px 0;
-  color: white;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
 .student-meta-grid {
@@ -78,14 +80,14 @@
 .meta-label {
   font-size: 11px;
   font-weight: 600;
-  color: #8a94a6;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.06em;
 }
 
 .meta-value {
   font-size: 14px;
-  color: var(--muted);
+  color: var(--text-secondary);
 }
 
 .current-fee-card {
@@ -105,7 +107,7 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, .05);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .fee-row:last-child {
@@ -114,87 +116,74 @@
 }
 
 .fee-row span {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .fee-row strong {
-  color: white;
+  color: var(--text-primary);
   font-size: 16px;
 }
 
 .due-text {
-  color: #ff4d4f !important;
+  color: var(--status-due-text) !important;
 }
 
 .status-badge,
 .status {
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
   font-weight: 600;
-  display: inline-block;
-  text-align: center;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .status.paid,
 .status-badge.paid {
-  background: rgba(34, 197, 94, .15);
-  color: #22c55e;
+  background: var(--status-paid-bg);
+  color: var(--status-paid-text);
+  border-color: var(--status-paid-border);
 }
 
 .status.partial,
 .status-badge.partial {
-  background: rgba(251, 191, 36, .15);
-  color: #facc15;
+  background: var(--status-due-bg);
+  color: var(--status-due-text);
+  border-color: var(--status-due-border);
 }
 
 .status.unpaid,
 .status-badge.unpaid {
-  background: rgba(239, 68, 68, .15);
-  color: #ef4444;
+  background: var(--status-danger-bg);
+  color: var(--status-danger-text);
+  border-color: var(--status-danger-border);
 }
 
 .ledger-card {
   margin-top: 24px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
 .ledger-title {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-  font-size: 18px;
-  font-weight: 700;
-  color: white;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .ledger-table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.ledger-table th {
-  padding: 16px;
-  text-align: left;
-  background: rgba(255, 255, 255, .02);
-  color: #8a94a6;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.ledger-table td {
-  padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, .05);
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.ledger-table tr:hover {
-  background: rgba(255, 255, 255, .02);
 }
 
 .details-grid {
@@ -207,9 +196,9 @@
 .detail-item {
   flex: 1 1 calc(20% - 16px);
   min-width: 160px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
@@ -225,13 +214,13 @@
 .detail-label {
   font-size: 11px;
   font-weight: 600;
-  color: #8a94a6;
-  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
 }
 
 .detail-value {
   font-size: 14px;
-  color: #fff;
+  color: var(--text-primary);
   word-break: break-word;
 }
 

@@ -242,11 +242,11 @@ function Teachers() {
           <tbody>
             {filteredTeachers.map((teacher) => (
               <tr key={teacher.id}>
-                <td>{teacher.teacher_id}</td>
-                <td>{teacher.name}</td>
+                <td className="cell-id">{teacher.teacher_id}</td>
+                <td className="cell-name">{teacher.name}</td>
                 <td>{teacher.subject}</td>
-                <td>{teacher.phone}</td>
-                <td>₹{formatCurrency(teacher.salary)}</td>
+                <td className="cell-mono">{teacher.phone}</td>
+                <td className="cell-amount">₹{formatCurrency(teacher.salary)}</td>
                 <td>
                   <button
                     className="edit-btn"

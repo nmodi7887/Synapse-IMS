@@ -1,0 +1,51 @@
+/* ============================================================
+   Legacy token bridge — TEMPORARY
+   Existing stylesheets still reference the previous token names.
+   These aliases map every legacy token onto the clinical light
+   design system in variables.css so nothing renders unstyled.
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --bg: var(--bg-canvas);
+  --sidebar: var(--bg-sidebar);
+  --surface: var(--bg-surface);
+  --surface-raised: var(--bg-surface);
+  --surface-hover: var(--bg-subtle);
+  --card: var(--bg-surface);
+  --card-hover: var(--bg-surface);
+  --bg-muted: var(--bg-subtle);
+
+  /* Type */
+  --text: var(--text-primary);
+  --muted: var(--text-secondary);
+  --faint: var(--text-muted);
+  --text-disabled: var(--text-muted);
+
+  /* Lines */
+  --border: var(--border-subtle);
+  --border-focus: var(--accent-primary-focus);
+
+  /* Accent */
+  --accent: var(--accent-primary);
+  --accent-hover: var(--accent-primary-hover);
+  --accent-fg: var(--text-inverse);
+  --accent-gradient: var(--accent-primary);
+  --accent-soft: var(--accent-primary-subtle);
+  --accent-border: #bfdbfe;
+
+  /* Legacy lime aliases → cobalt */
+  --accent-lime: var(--accent-primary);
+  --accent-lime-hover: var(--accent-primary-hover);
+  --accent-lime-fg: var(--text-inverse);
+
+  /* Status */
+  --warning: var(--status-due-text);
+  --warning-soft: var(--status-due-bg);
+  --warning-border: var(--status-due-border);
+
+  /* Focus */
+  --focus: var(--accent-primary);
+}

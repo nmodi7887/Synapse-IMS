@@ -129,7 +129,7 @@ function StudentProfile() {
             </div>
             <div className="fee-row">
               <span>Due</span>
-              <strong className="due-text" style={{ color: dueFee > 0 ? "#ff4d4f" : "inherit" }}>₹{formatCurrency(dueFee)}</strong>
+              <strong className="due-text" style={{ color: dueFee > 0 ? "var(--status-due-text)" : "inherit" }}>₹{formatCurrency(dueFee)}</strong>
             </div>
             <div className="fee-row">
               <span>Status</span>
@@ -185,7 +185,7 @@ function StudentProfile() {
               <td>{currentMonthName}</td>
               <td>₹{formatCurrency(monthlyFee)}</td>
               <td>₹{formatCurrency(paidFee)}</td>
-              <td style={{ color: dueFee > 0 ? "#ff4d4f" : "inherit" }}>₹{formatCurrency(dueFee)}</td>
+              <td style={{ color: dueFee > 0 ? "var(--status-due-text)" : "inherit" }}>₹{formatCurrency(dueFee)}</td>
               <td>
                 <span className={`status ${statusClass}`}>{statusText}</span>
               </td>

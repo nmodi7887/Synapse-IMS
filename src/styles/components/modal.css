@@ -1,119 +1,150 @@
+/* ============================================================
+   Modal dialogs — clinical light
+   ============================================================ */
+
+/* ---------- Backdrop ---------- */
+.modal-overlay,
 .modal-overlay-fees {
   position: fixed;
   inset: 0;
-  background: rgba(3, 7, 18, 0.7);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
   padding: 16px;
+  overflow-y: auto;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(3, 7, 18, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+/* ---------- Shell ---------- */
+.modal,
+.modal-card-inner {
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
 }
 
 .modal {
-  width: 540px;
-  max-width: 90vw;
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-@media (max-width: 640px) {
-  .modal {
-    padding: 20px;
-    max-width: 95vw;
-  }
-}
-
-.modal h2 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.modal input {
-  padding: 12px 16px;
-  background: #1e293b;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-@media (max-width: 640px) {
-  .modal input {
-    font-size: 16px;
-  }
-}
-
-.modal input:focus {
-  border-color: var(--accent);
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 12px;
+  gap: 14px;
+  padding: 24px;
 }
 
 .modal-card-inner {
-  width: 100%;
-  max-width: 460px;
-  background: #111827;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.75);
+  padding: 24px;
 }
 
 @media (max-width: 640px) {
+  .modal,
   .modal-card-inner {
-    padding: 14px;
+    padding: 18px;
   }
+}
+
+/* ---------- Header ---------- */
+.modal h2,
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
-}
-
-.modal-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  color: #fff;
-  font-size: 15px;
+  margin-bottom: 14px;
 }
 
 .modal-close {
-  color: var(--muted);
-  cursor: pointer;
-  font-size: 20px;
   flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.modal-close:hover {
+  color: var(--text-primary);
+}
+
+/* ---------- Form inputs ---------- */
+.modal input,
+.modal-form input,
+.modal textarea,
+.modal select,
+.modal-card-inner input,
+.modal-card-inner textarea,
+.modal-card-inner select {
+  width: 100%;
+  height: 38px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  outline: none;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.modal textarea,
+.modal-card-inner textarea {
+  height: auto;
+  min-height: 84px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  resize: vertical;
+}
+
+.modal input::placeholder,
+.modal-form input::placeholder,
+.modal textarea::placeholder,
+.modal-card-inner input::placeholder {
+  color: var(--text-muted);
+}
+
+.modal input:focus,
+.modal-form input:focus,
+.modal textarea:focus,
+.modal select:focus,
+.modal-card-inner input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-primary-focus);
+  background: var(--bg-surface);
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .modal input,
+  .modal-form input,
+  .modal-card-inner input {
+    font-size: 16px;
+  }
+}
+
+/* ---------- Form layout ---------- */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .modal-form-grid {
@@ -128,45 +159,26 @@
   }
 }
 
-.modal-form {
+/* ---------- Footer actions ---------- */
+.modal-actions,
+.form-actions-end {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+  flex-wrap: wrap;
 }
 
-.modal-form input {
-  width: 100%;
-  padding: 8px 12px;
-  background: #1e293b;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.2s;
-  box-sizing: border-box;
-}
-
-.modal-form input:focus {
-  border-color: #818cf8;
-}
-
-.modal-form input::placeholder {
-  color: #475569;
-}
-
-.modal-form .btn,
-.modal-form .btn-secondary {
-  padding: 7px 14px;
-  font-size: 13px;
-}
-
+/* ---------- Number input cleanup ---------- */
+.modal input[type="number"]::-webkit-inner-spin-button,
+.modal input[type="number"]::-webkit-outer-spin-button,
 .modal-form input[type="number"]::-webkit-inner-spin-button,
 .modal-form input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
+.modal input[type="number"],
 .modal-form input[type="number"] {
   -moz-appearance: textfield;
 }

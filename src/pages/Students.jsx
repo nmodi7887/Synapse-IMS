@@ -106,7 +106,7 @@ function Students() {
         </div>
 
         <button className="btn" onClick={() => navigate("/admission")}>
-          + New Admission
+          New Admission
         </button>
       </div>
 
@@ -142,10 +142,10 @@ function Students() {
               paginatedStudents.map((student) => (
                 <tr key={student.id}>
                   <td className="cell-id">{student.student_id}</td>
-                  <td>{student.name}</td>
+                  <td className="cell-name">{student.name}</td>
                   <td>{student.father_name}</td>
-                  <td>{student.class}</td>
-                  <td>{student.phone}</td>
+                  <td className="cell-mono">{student.class}</td>
+                  <td className="cell-mono">{student.phone}</td>
                   <td>
                     <span
                       className={
@@ -157,7 +157,7 @@ function Students() {
                       {student.fee_status || "Due"}
                     </span>
                   </td>
-                  <td style={{ whiteSpace: "nowrap" }}>
+                  <td className="cell-actions">
                     <button
                       className="view-btn"
                       onClick={() => navigate(`/students/${student.id}`)}

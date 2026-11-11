@@ -293,9 +293,9 @@ function Fees() {
                 <tr key={p.id}>
                   <td className="cell-receipt">{p.receipt_no}</td>
                   <td className="cell-muted">{p.student_id}</td>
-                  <td style={{ fontWeight: "500" }}>{p.student_name}</td>
-                  <td>{p.class || "—"}</td>
-                  <td>{p.payment_date}</td>
+                  <td className="cell-name">{p.student_name}</td>
+                  <td className="cell-mono">{p.class || "—"}</td>
+                  <td className="cell-mono">{p.payment_date}</td>
                   <td className="cell-amount-paid">₹{formatCurrency(p.amount)}</td>
                   <td className="cell-note">{p.note || "—"}</td>
                   <td className={p.dues > 0 ? "cell-dues" : "cell-settled-txt"}>
@@ -370,7 +370,7 @@ function Fees() {
           <div className="modal-card-inner" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3 className="modal-title">
-                <MdReceiptLong style={{ color: "#818cf8" }} /> Log Fee Payment Invoice
+                <MdReceiptLong style={{ color: "var(--accent-lime)" }} /> Log Fee Payment Invoice
               </h3>
               <MdClose className="modal-close" onClick={() => setShowModal(false)} />
             </div>

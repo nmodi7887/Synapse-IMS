@@ -14,7 +14,10 @@
 }
 
 .loading-text {
-  color: var(--muted);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .page-top {
@@ -30,25 +33,79 @@
 }
 
 .back-btn {
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.02);
-  color: var(--text);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
   padding: 10px 18px;
-  border-radius: 10px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  transition: all 0.2s ease;
+  box-shadow: var(--shadow-card);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
-  transform: translateX(-2px);
+  background: var(--bg-subtle);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
 }
 
 .view-link {
   font-size: 12px;
-  color: var(--accent);
+  font-weight: 600;
+  color: var(--accent-primary);
   cursor: pointer;
   white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.view-link:hover {
+  color: var(--accent-primary-hover);
+}
+
+/* ========== Legacy inline pagination / utility controls ========== */
+.main-content button[style]:not(.btn):not(.btn-secondary):not(.theme-btn):not(.glass-btn):not(.collect-btn):not(.back-btn):not(.glow-btn) {
+  border-radius: var(--radius-pill) !important;
+  border-color: var(--border-subtle) !important;
+  background: var(--bg-surface) !important;
+  color: var(--text-secondary) !important;
+  box-shadow: var(--shadow-card);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.main-content button[style]:not(.btn):not(.btn-secondary):not(.theme-btn):not(.glass-btn):not(.collect-btn):not(.back-btn):not(.glow-btn):hover:not(:disabled) {
+  background: var(--accent-primary-subtle) !important;
+  border-color: #bfdbfe !important;
+  color: var(--accent-primary) !important;
+}
+
+.main-content button[style]:not(.btn):not(.btn-secondary):not(.theme-btn):not(.glass-btn):not(.collect-btn):not(.back-btn):not(.glow-btn):disabled {
+  background: var(--bg-subtle) !important;
+  color: var(--text-muted) !important;
+  cursor: not-allowed !important;
+  box-shadow: none;
+}
+
+/* Preserve the active pagination page as a cobalt pill */
+.main-content button[style*="font-weight: 600"]:not(.btn):not(.btn-secondary):not(.theme-btn):not(.glass-btn):not(.collect-btn):not(.back-btn):not(.glow-btn) {
+  background: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+  color: var(--text-inverse) !important;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+/* Legacy inline pagination copy */
+.main-content > div[style] > div[style]:first-child {
+  color: var(--text-muted) !important;
+}
+
+.main-content > div[style] > div[style] span[style] {
+  color: var(--text-muted) !important;
 }

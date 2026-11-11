@@ -182,8 +182,8 @@ function Dashboard() {
                       onClick={() => navigate(`/students/${student.id}`)}
                     >
                       <td className="cell-id">{student.student_id}</td>
-                      <td>{student.name}</td>
-                      <td>{student.class}</td>
+                      <td className="cell-name">{student.name}</td>
+                      <td className="cell-mono">{student.class}</td>
                       <td>
                         <span className={student.fee_status === "Paid" ? "status-paid" : "status-due"}>
                           {student.fee_status || "Due"}
@@ -224,7 +224,7 @@ function Dashboard() {
                     <tr key={payment.id}>
                       <td className="cell-muted">{payment.receipt_no}</td>
                       <td className="cell-name">{payment.student_name}</td>
-                      <td>{payment.payment_date}</td>
+                      <td className="cell-mono">{payment.payment_date}</td>
                       <td className="cell-amount">₹{formatCurrency(payment.amount)}</td>
                     </tr>
                   ))
