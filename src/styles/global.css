@@ -47,6 +47,10 @@
   animation: toastSlideIn 0.3s ease-out;
 }
 
+.toast span {
+  color: inherit;
+}
+
 .toast-success {
   border-left-color: var(--status-paid-text);
 }

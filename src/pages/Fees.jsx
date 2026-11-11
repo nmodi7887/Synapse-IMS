@@ -251,7 +251,7 @@ function Fees() {
         </div>
         <div className="header-actions">
           <button className="glass-btn" onClick={() => navigate("/reports")}>Print Bill</button>
-          <button className="collect-btn" onClick={() => setShowModal(true)}>+ Collect Payment</button>
+          <button className="collect-btn" onClick={() => setShowModal(true)}>Collect Payment</button>
         </div>
       </div>
 

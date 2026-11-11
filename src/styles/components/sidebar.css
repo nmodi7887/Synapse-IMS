@@ -147,6 +147,7 @@
 
 .nav-text {
   margin-left: 12px;
+  color: inherit;
 }
 
 .nav-link:hover {
