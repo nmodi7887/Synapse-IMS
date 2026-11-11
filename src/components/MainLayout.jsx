@@ -40,15 +40,11 @@ function MainLayout({ children }) {
     loadUser();
   }, []);
 
-  /* Auto-hide the floating navbar while scrolling down */
   useEffect(() => {
-    // Keep the navbar (and its mega-menu) pinned while the menu is open.
     if (isMobileOpen) {
       setNavbarHidden(false);
       return undefined;
     }
-
-    // A route change resets scroll, so bring the navbar back into view.
     setNavbarHidden(false);
 
     let prevScrollY = window.scrollY;

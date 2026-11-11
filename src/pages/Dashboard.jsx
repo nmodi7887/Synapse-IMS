@@ -200,7 +200,7 @@ function Dashboard() {
           <h4 className="recent-section-header">
             <span>Recent Payment Receipts</span>
             <span className="view-link" onClick={() => navigate("/fees")}>
-              View Ledger →
+              View History →
             </span>
           </h4>
           <div className="table-container">
