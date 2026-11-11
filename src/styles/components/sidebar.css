@@ -35,6 +35,13 @@
   border: 1px solid #e2e8f0;
   border-radius: 9999px;
   box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  transition: transform 300ms ease;
+}
+
+/* Auto-hidden while scrolling down — keeps the X-axis centering intact */
+.sidebar.navbar--hidden {
+  transform: translateX(-50%) translateY(-120%);
+  pointer-events: none;
 }
 
 /* ---------- Brand mark ---------- */
@@ -60,6 +67,36 @@
   border: 0;
   border-radius: 0;
   box-shadow: none;
+}
+
+/* ---------- Center brand label ---------- */
+
+.nav-center-branding {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 40%;
+  padding: 0 12px;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.branding-title {
+  display: block;
+  overflow: hidden;
+  color: #0f172a;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* ---------- Menu toggle pill ---------- */
@@ -89,7 +126,9 @@
     background var(--transition-fast),
     border-color var(--transition-fast),
     color var(--transition-fast),
-    box-shadow var(--transition-fast);
+    box-shadow var(--transition-fast),
+    transform 300ms ease,
+    opacity 300ms ease;
 }
 
 .mobile-menu-toggle-trigger svg {
@@ -113,6 +152,13 @@
 .mobile-menu-toggle-trigger:focus-visible {
   outline: 2px solid #2563eb;
   outline-offset: 2px;
+}
+
+/* The toggle travels with the header so it never floats alone */
+.layout:has(.sidebar.navbar--hidden) .mobile-menu-toggle-trigger {
+  opacity: 0;
+  transform: translateY(-160%);
+  pointer-events: none;
 }
 
 /* ---------- Expanded mega-menu card ---------- */
@@ -347,6 +393,11 @@
 /* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {
+  /* The pill is too narrow for logo + wordmark + account chip */
+  .nav-center-branding {
+    display: none;
+  }
+
   .sidebar.mobile-expanded nav {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 24px;
@@ -400,5 +451,14 @@
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .mobile-menu-toggle-trigger {
+    transition: none;
   }
 }

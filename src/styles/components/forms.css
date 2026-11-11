@@ -1,3 +1,22 @@
+/* ============================================================
+   Forms — clinical light controls
+   ============================================================ */
+
+/* ---------- Labels ---------- */
+
+.field-label,
+.form-field-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+/* ---------- Search / filter controls ---------- */
+
 .search-box {
   display: flex;
   gap: 12px;
@@ -5,59 +24,47 @@
   margin: 24px 0;
 }
 
+.search-box input,
+.search-box select {
+  height: 42px;
+  padding: 0 14px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  color: #0f172a;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  outline: none;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
 .search-box input {
   width: 100%;
   max-width: 320px;
-  padding: 11px 18px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  color: var(--text-primary);
-  font-size: 14px;
-  outline: none;
-  box-shadow: var(--shadow-card);
-  transition:
-    background var(--transition-fast),
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
-
-.search-box input:focus {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px var(--accent-primary-focus);
-  background: var(--bg-surface);
-}
-
-.search-box input::placeholder {
-  color: var(--text-muted);
 }
 
 .search-box select {
-  padding: 11px 18px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  color: var(--text-primary);
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
   min-width: 150px;
-  box-shadow: var(--shadow-card);
-  transition:
-    background var(--transition-fast),
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
+  cursor: pointer;
 }
 
+.search-box input::placeholder {
+  color: #94a3b8;
+}
+
+.search-box input:focus,
 .search-box select:focus {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px var(--accent-primary-focus);
-  background: var(--bg-surface);
+  background: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .search-box select option {
-  background: var(--bg-surface);
-  color: var(--text-primary);
+  background: #ffffff;
+  color: #0f172a;
 }
 
 @media (max-width: 768px) {
@@ -66,6 +73,8 @@
     max-width: none;
   }
 }
+
+/* ---------- Inline search bar ---------- */
 
 .search-bar {
   display: flex;
@@ -76,26 +85,33 @@
 }
 
 .search-icon {
-  color: var(--text-muted);
+  color: #64748b;
   font-size: 20px;
   flex-shrink: 0;
 }
 
 .search-input {
-  background: transparent;
-  border: none;
-  color: var(--text-primary);
   width: 100%;
   max-width: 300px;
-  outline: none;
+  background: transparent;
+  border: none;
+  color: #0f172a;
+  font-family: var(--font-sans);
   font-size: 14px;
+  outline: none;
 }
 
+.search-input::placeholder {
+  color: #94a3b8;
+}
+
+/* ---------- Admission form ---------- */
+
 .admission-form {
-  margin-top: 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  margin-top: 24px;
 }
 
 .photo-upload-card {
@@ -106,16 +122,16 @@
 }
 
 .profile-avatar {
-  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 80px;
   height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-subtle);
-  overflow: hidden;
   flex-shrink: 0;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .avatar-img {
@@ -124,59 +140,48 @@
   object-fit: cover;
 }
 
+/* ---------- Form footers ---------- */
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 40px;
   flex-wrap: wrap;
-}
-
-.field-group {
-  position: relative;
-}
-
-.field-label {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 0.01em;
-}
-
-.search-field-wrap {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-.field-input {
-  width: 100%;
-  padding-right: 35px !important;
-}
-
-.form-field-label {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
 }
 
 .form-actions-end {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 4px;
+  gap: 10px;
+  margin-top: 24px;
   flex-wrap: wrap;
 }
 
+/* ---------- Field helpers ---------- */
+
+.field-group {
+  position: relative;
+}
+
+.search-field-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-input {
+  width: 100%;
+  padding-right: 40px !important;
+}
+
 .field-readonly {
-  background: var(--bg-subtle) !important;
-  color: var(--text-muted) !important;
+  background: #f1f5f9 !important;
+  color: #64748b !important;
   cursor: not-allowed !important;
 }
+
+/* ---------- Profile grid ---------- */
 
 .profile-grid {
   display: grid;

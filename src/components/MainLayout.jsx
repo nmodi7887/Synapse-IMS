@@ -19,6 +19,7 @@ function MainLayout({ children }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [navbarHidden, setNavbarHidden] = useState(false);
 
   useEffect(() => {
     async function loadUser() {
@@ -37,6 +38,47 @@ function MainLayout({ children }) {
     }
     loadUser();
   }, []);
+
+  /* Auto-hide the floating navbar while scrolling down */
+  useEffect(() => {
+    // Keep the navbar (and its mega-menu) pinned while the menu is open.
+    if (isMobileOpen) {
+      setNavbarHidden(false);
+      return undefined;
+    }
+
+    // A route change resets scroll, so bring the navbar back into view.
+    setNavbarHidden(false);
+
+    let prevScrollY = window.scrollY;
+    let frameId = null;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > prevScrollY && currentScrollY > 60) {
+        setNavbarHidden(true);
+      } else if (currentScrollY < prevScrollY) {
+        setNavbarHidden(false);
+      }
+
+      prevScrollY = currentScrollY;
+      frameId = null;
+    };
+
+    const onScroll = () => {
+      if (frameId === null) {
+        frameId = window.requestAnimationFrame(handleScroll);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
+    };
+  }, [isMobileOpen, location.pathname]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -62,10 +104,14 @@ function MainLayout({ children }) {
       <aside
         className={`sidebar ${
           isMobileOpen ? "mobile-expanded" : "mobile-collapsed"
-        }`}
+        }${navbarHidden ? " navbar--hidden" : ""}`}
       >
         <div className="logo-container">
           <img src="/logo.png" alt="SWC Logo" className="sidebar-logo" />
+        </div>
+
+        <div className="nav-center-branding">
+          <span className="branding-title">SUCCESS WITH CLASS</span>
         </div>
 
         <nav>
