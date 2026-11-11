@@ -8,8 +8,7 @@ export default function Footer() {
         <div className="footer-col">
           <h4 className="footer-heading">ABOUT US</h4>
           <p className="footer-desc">
-            Synapse IMS provides unified institutional management, automated revenue reconciliation,
-            and real-time student registry management.
+            Synapse IMS provides student administration, fee management, and institutional record keeping for coaching centers and educational institutes.
           </p>
         </div>
 
@@ -39,14 +38,14 @@ export default function Footer() {
             <span className="contact-icon">📞</span>
             <div>
               <div className="contact-label">Helpdesk</div>
-              <div className="contact-value">+91 8434272937</div>
+              <div className="contact-value">+91 8271834789</div>
             </div>
           </div>
           <div className="footer-contact-item">
             <span className="contact-icon">✉️</span>
             <div>
               <div className="contact-label">Email</div>
-              <div className="contact-value">support@synapseims.in</div>
+              <div className="contact-value">staviqstudio@gmail.com</div>
             </div>
           </div>
         </div>
