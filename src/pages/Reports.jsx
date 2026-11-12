@@ -371,7 +371,7 @@ function Reports() {
           margin-top: 0;
         }
         .demand-expanded {
-          max-height: 500px;
+          max-height: 720px;
           opacity: 1;
           margin-top: 16px;
         }
@@ -387,40 +387,15 @@ function Reports() {
 
         <div className="billing-columns">
           {/*  SECTION 1: INVOICE BILL (INDIVIDUAL)  */}
-          <div
-            className="card billing-card"
-            style={{
-              position: "relative",
-              padding: "24px",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBottom: "18px",
-              }}
-            >
-              <div
-                style={{
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  background: "#818cf8",
-                }}
-              ></div>
-              <label
-                style={{
-                  color: "#e5e7eb",
-                  fontWeight: "700",
-                  fontSize: "15px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.5px",
-                }}
-              >
-                Invoice Bill — Individual
-              </label>
+          <div className="card billing-card">
+            <div className="billing-head">
+              <span className="billing-dot" aria-hidden="true" />
+              <div className="billing-head-copy">
+                <h3 className="billing-title">Invoice Bill — Individual</h3>
+                <p className="billing-sub">
+                  Search a student to generate a printable fee invoice.
+                </p>
+              </div>
             </div>
 
             <strong
@@ -637,23 +612,10 @@ function Reports() {
                     flexWrap: "wrap",
                   }}
                 >
-                  <div style={{ position: "relative", width: "220px" }}>
+                  <div className="select-wrap month-select">
                     <select
                       value={paidTillMonth}
                       onChange={(e) => setPaidTillMonth(e.target.value)}
-                      style={{
-                        width: "100%",
-                        padding: "10px 36px 10px 12px",
-                        background: "#1e293b",
-                        color: paidTillMonth ? "#f8fafc" : "#94a3b8",
-                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                        borderRadius: "8px",
-                        fontSize: "13px",
-                        fontWeight: "500",
-                        cursor: "pointer",
-                        appearance: "none",
-                        outline: "none",
-                      }}
                     >
                       <option value="" disabled>
                         Select Month
@@ -664,17 +626,7 @@ function Reports() {
                         </option>
                       ))}
                     </select>
-                    <MdArrowDropDown
-                      style={{
-                        position: "absolute",
-                        right: "10px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        color: "#818cf8",
-                        fontSize: "20px",
-                        pointerEvents: "none",
-                      }}
-                    />
+                    <MdArrowDropDown className="select-caret" aria-hidden="true" />
                   </div>
 
                   <button
@@ -763,96 +715,45 @@ function Reports() {
 
 
           {/* ===== SECTION 2: DEMAND BILL (CLASS WISE) ===== */}
-          <div
-            className="card billing-card demand-card"
-            style={{
-              padding: "24px",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBottom: "18px",
-              }}
-            >
-              <div
-                style={{
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  background: "#fbbf24",
-                }}
-              ></div>
-              <label
-                style={{
-                  color: "#e5e7eb",
-                  fontWeight: "700",
-                  fontSize: "15px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.5px",
-                }}
-              >
-                Demand Bill — Class Wise
-              </label>
+          <div className="card billing-card demand-card">
+            <div className="billing-head">
+              <span className="billing-dot billing-dot--due" aria-hidden="true" />
+              <div className="billing-head-copy">
+                <h3 className="billing-title">Demand Bill — Class Wise</h3>
+                <p className="billing-sub">
+                  Generate a printable fee demand for every student in a class.
+                </p>
+              </div>
             </div>
 
-            <div style={{ display: "flex", gap: "10px", alignItems: "flex-end" }}>
-              <div style={{ flex: 1 }}>
-                <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "6px",
-                    fontSize: "13px",
-                    color: "#94a3b8",
-                  }}
-                >
-                  Select Class
-                </strong>
-                <select
-                  value={demandClassFilter}
-                  onChange={(e) => setDemandClassFilter(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "10px 14px",
-                    background: "rgba(15, 23, 42, 0.6)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "10px",
-                    color: "#fff",
-                    fontSize: "13px",
-                    outline: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  <option value="">Select a class</option>
-                  {studentClassOptions.map((cls) => (
-                    <option key={cls} value={cls}>
-                      {cls}
-                    </option>
-                  ))}
-                </select>
+            <div className="demand-row">
+              <div className="demand-field">
+                <strong className="field-label">Select Class</strong>
+                <div className="select-wrap">
+                  <select
+                    value={demandClassFilter}
+                    onChange={(e) => setDemandClassFilter(e.target.value)}
+                  >
+                    <option value="">Select a class</option>
+                    {studentClassOptions.map((cls) => (
+                      <option key={cls} value={cls}>
+                        {cls}
+                      </option>
+                    ))}
+                  </select>
+                  <MdArrowDropDown className="select-caret" aria-hidden="true" />
+                </div>
               </div>
               {demandClassFilter && (
                 <button
+                  type="button"
                   onClick={() => {
                     setDemandClassFilter("");
                     setDemandOtherFee("");
                     setDemandOtherFeeNote("");
                     setDemandForMonth("");
                   }}
-                  style={{
-                    padding: "10px 14px",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "10px",
-                    color: "#94a3b8",
-                    fontSize: "12px",
-                    cursor: "pointer",
-                    whiteSpace: "nowrap",
-                    transition: "all 0.2s",
-                    flexShrink: 0,
-                  }}
+                  className="demand-reset"
                   title="Cancel"
                 >
                   Cancel
@@ -861,119 +762,54 @@ function Reports() {
             </div>
 
             <div className={`demand-collapsible ${demandClassFilter ? "demand-expanded" : ""}`}>
-              <div>
-                <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "6px",
-                    fontSize: "13px",
-                    color: "#94a3b8",
-                  }}
-                >
-                  Other Fee (₹)
-                </strong>
-                <SecureNumberInput
-                  placeholder="e.g. 500"
-                  value={demandOtherFee}
-                  onChange={(e) => setDemandOtherFee(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "10px 14px",
-                    background: "rgba(15, 23, 42, 0.6)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "10px",
-                    color: "#fff",
-                    fontSize: "13px",
-                    outline: "none",
-                    marginBottom: "10px",
-                    boxSizing: "border-box",
-                  }}
-                />
+              <div className="demand-panel">
+                <div className="demand-fields">
+                  <div>
+                    <strong className="field-label">Other Fee (₹)</strong>
+                    <SecureNumberInput
+                      placeholder="e.g. 500"
+                      value={demandOtherFee}
+                      onChange={(e) => setDemandOtherFee(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <strong className="field-label">What is this Other Fee for?</strong>
+                    <input
+                      type="text"
+                      placeholder="e.g. Books, Supplies, Uniform..."
+                      value={demandOtherFeeNote}
+                      onChange={(e) => setDemandOtherFeeNote(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <strong className="field-label">For Month</strong>
+                    <div className="select-wrap">
+                      <select
+                        value={demandForMonth}
+                        onChange={(e) => setDemandForMonth(e.target.value)}
+                      >
+                        <option value="">Select Month</option>
+                        {monthNames.map((m) => (
+                          <option key={m} value={m}>
+                            {m}
+                          </option>
+                        ))}
+                      </select>
+                      <MdArrowDropDown className="select-caret" aria-hidden="true" />
+                    </div>
+                  </div>
+                </div>
 
-                <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "6px",
-                    fontSize: "13px",
-                    color: "#94a3b8",
-                  }}
-                >
-                  What is this Other Fee for?
-                </strong>
-                <input
-                  type="text"
-                  placeholder='e.g. Books, Supplies, Uniform...'
-                  value={demandOtherFeeNote}
-                  onChange={(e) => setDemandOtherFeeNote(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "10px 14px",
-                    background: "rgba(15, 23, 42, 0.6)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "10px",
-                    color: "#fff",
-                    fontSize: "13px",
-                    outline: "none",
-                    marginBottom: "16px",
-                    boxSizing: "border-box",
-                  }}
-                />
-
-                <strong
-                  style={{
-                    display: "block",
-                    marginBottom: "6px",
-                    fontSize: "13px",
-                    color: "#94a3b8",
-                  }}
-                >
-                  For Month
-                </strong>
-                <input
-                  type="text"
-                  placeholder="e.g. June 2026"
-                  value={demandForMonth}
-                  onChange={(e) => setDemandForMonth(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "10px 14px",
-                    background: "rgba(15, 23, 42, 0.6)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "10px",
-                    color: "#fff",
-                    fontSize: "13px",
-                    outline: "none",
-                    marginBottom: "16px",
-                    boxSizing: "border-box",
-                  }}
-                />
-
-                <button
-                  onClick={handlePrintDemandBill}
-                  disabled={!demandClassFilter || !demandForMonth.trim()}
-                  className="glow-btn"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "11px 22px",
-                    background: demandClassFilter && demandForMonth.trim()
-                      ? "linear-gradient(135deg, #f59e0b, #d97706)"
-                      : "rgba(255,255,255,0.05)",
-                    color: demandClassFilter && demandForMonth.trim() ? "#ffffff" : "#64748b",
-                    border: "none",
-                    borderRadius: "8px",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    cursor: demandClassFilter && demandForMonth.trim() ? "pointer" : "not-allowed",
-                    boxShadow: demandClassFilter && demandForMonth.trim()
-                      ? "0 4px 12px rgba(245, 158, 11, 0.3)"
-                      : "none",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <MdPrint style={{ fontSize: "18px" }} /> Generate Demand Bill
-                </button>
+                <div className="demand-actions">
+                  <button
+                    type="button"
+                    onClick={handlePrintDemandBill}
+                    disabled={!demandClassFilter || !demandForMonth.trim()}
+                    className="glow-btn"
+                  >
+                    <MdPrint style={{ fontSize: "18px" }} /> Generate Demand Bill
+                  </button>
+                </div>
               </div>
             </div>
           </div>

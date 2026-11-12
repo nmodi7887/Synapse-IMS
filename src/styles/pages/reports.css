@@ -150,6 +150,141 @@
   color: var(--text-primary) !important;
 }
 
+/* ---------- Shared select control ---------- */
+
+.reports-wrapper .select-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.reports-wrapper .select-wrap select {
+  width: 100%;
+  padding: 0 38px 0 14px !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: none;
+  cursor: pointer;
+}
+
+.reports-wrapper .select-caret {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  color: #64748b;
+  font-size: 22px;
+  line-height: 1;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: color 140ms ease;
+}
+
+.reports-wrapper .select-wrap:hover .select-caret,
+.reports-wrapper .select-wrap:focus-within .select-caret {
+  color: #2563eb;
+}
+
+.reports-wrapper .month-select {
+  width: 220px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+/* ---------- Demand bill card ---------- */
+
+.reports-wrapper .billing-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.reports-wrapper .billing-dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent-primary);
+}
+
+.reports-wrapper .billing-dot--due {
+  background: #f59e0b;
+}
+
+.reports-wrapper .billing-head-copy {
+  min-width: 0;
+}
+
+.reports-wrapper .billing-title {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.reports-wrapper .billing-sub {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.reports-wrapper .demand-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.reports-wrapper .demand-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.reports-wrapper .demand-reset {
+  height: 42px;
+  flex-shrink: 0;
+  padding: 0 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  color: #64748b;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.reports-wrapper .demand-reset:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.reports-wrapper .demand-panel {
+  padding: 18px;
+  background: #f8fafc;
+  border: 1px solid #eef2f7;
+  border-radius: 16px;
+}
+
+.reports-wrapper .demand-fields {
+  display: grid;
+  gap: 14px;
+}
+
+.reports-wrapper .demand-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
 @media (max-width: 1024px) {
   .billing-card {
     flex: 1 1 100%;
@@ -160,7 +295,25 @@
   .reports-wrapper {
     padding: 12px;
   }
+
   .billing-card {
     padding: 16px;
+  }
+
+  .reports-wrapper .demand-row {
+    flex-wrap: wrap;
+  }
+
+  .reports-wrapper .demand-field {
+    flex-basis: 100%;
+  }
+
+  .reports-wrapper .demand-reset {
+    width: 100%;
+  }
+
+  .reports-wrapper .demand-actions .glow-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
