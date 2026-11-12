@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/components/footer.css';
 import { Link } from 'react-router-dom';
+import { MdPhone, MdEmail } from 'react-icons/md';
 
 export default function Footer() {
   return (
@@ -28,22 +29,24 @@ export default function Footer() {
           <ul className="footer-links">
             <li><a href="#terms">Terms & Conditions</a></li>
             <li><Link to="/privacy-policy">Privacy Policy</Link></li>
-            <li><a href="#security">Data Security</a></li>
-            <li><a href="#compliance">Audit Guidelines</a></li>
           </ul>
         </div>
 
         <div className="footer-col">
           <h4 className="footer-heading">CONTACT & SUPPORT</h4>
           <div className="footer-contact-item">
-            <span className="contact-icon">📞</span>
+            <span className="contact-icon" aria-hidden="true">
+              <MdPhone size={17} />
+            </span>
             <div>
               <div className="contact-label">Helpdesk</div>
               <div className="contact-value">+91 8271834789</div>
             </div>
           </div>
           <div className="footer-contact-item">
-            <span className="contact-icon">✉️</span>
+            <span className="contact-icon" aria-hidden="true">
+              <MdEmail size={17} />
+            </span>
             <div>
               <div className="contact-label">Email</div>
               <div className="contact-value">staviqstudio@gmail.com</div>

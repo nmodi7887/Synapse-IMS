@@ -469,11 +469,13 @@
 /* ---------- Page content clears the floating header ---------- */
 
 .main-content {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 1400px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: calc(var(--header-gutter) + var(--header-height) + 24px) 32px 48px;
+  padding: calc(var(--header-gutter) + var(--header-height) + 24px) 32px 0;
   background: var(--bg-canvas);
 }
 
@@ -540,7 +542,7 @@
   }
 
   .main-content {
-    padding: calc(var(--header-gutter) + var(--header-height) + 20px) 16px 32px;
+    padding: calc(var(--header-gutter) + var(--header-height) + 20px) 16px 0;
   }
 }
 

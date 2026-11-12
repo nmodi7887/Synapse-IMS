@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { MdClose, MdZoomIn } from "react-icons/md";
 import { supabase } from "../services/supabase";
 import { formatCurrency } from "../utils/validation";
 
@@ -7,6 +8,7 @@ function StudentProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [student, setStudent] = useState(null);
+  const [showPhoto, setShowPhoto] = useState(false);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "—";
@@ -19,6 +21,24 @@ function StudentProfile() {
       fetchStudent();
     }
   }, [id]);
+
+  /* Photo lightbox: Escape to close and lock background scrolling */
+  useEffect(() => {
+    if (!showPhoto) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setShowPhoto(false);
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showPhoto]);
 
   async function fetchStudent() {
     if (!id || id === "undefined") {
@@ -42,7 +62,7 @@ function StudentProfile() {
   if (!student) {
     return (
       <div className="loading-container">
-        <h2 style={{ color: "var(--muted)" }}>Loading Student Records...</h2>
+        <h2 style={{ color: "var(--text-heading)" }}>Loading Student Records...</h2>
       </div>
     );
   }
@@ -89,28 +109,36 @@ function StudentProfile() {
 
       <div className="student-dashboard">
         <div className="student-card">
-          <div className="student-photo">
+          <button
+            type="button"
+            className="student-photo"
+            onClick={() => setShowPhoto(true)}
+            aria-label={`View photo of ${student.name}`}
+          >
             {student.photo_url ? (
               <img src={student.photo_url} alt={student.name} className="photo-img" />
             ) : (
               <span className="photo-initials">{initials}</span>
             )}
-          </div>
+            <span className="photo-zoom-hint" aria-hidden="true">
+              <MdZoomIn size={15} />
+            </span>
+          </button>
 
           <div className="student-basic">
             <h2 className="student-name">{student.name}</h2>
             <div className="student-meta-grid">
-              <div className="meta-item meta-id">
+              <div className="meta-item">
                 <span className="meta-label">Student ID</span>
-                <span className="meta-value meta-badge meta-badge--id">{student.student_id}</span>
+                <span className="meta-value">{student.student_id}</span>
               </div>
               <div className="meta-item">
                 <span className="meta-label">Admission No.</span>
                 <span className="meta-value">{student.roll_no || "--"}</span>
               </div>
-              <div className="meta-item meta-full meta-class">
+              <div className="meta-item meta-full">
                 <span className="meta-label">Class</span>
-                <span className="meta-value meta-badge meta-badge--class">{student.class || "--"}</span>
+                <span className="meta-value">{student.class || "--"}</span>
               </div>
             </div>
           </div>
@@ -125,11 +153,11 @@ function StudentProfile() {
             </div>
             <div className="fee-row">
               <span>Paid</span>
-              <strong className="amount-paid">₹{formatCurrency(paidFee)}</strong>
+              <strong className="amount-num">₹{formatCurrency(paidFee)}</strong>
             </div>
             <div className="fee-row">
               <span>Due</span>
-              <strong className="amount-due">₹{formatCurrency(dueFee)}</strong>
+              <strong className="amount-num">₹{formatCurrency(dueFee)}</strong>
             </div>
             <div className="fee-row">
               <span>Status</span>
@@ -143,22 +171,22 @@ function StudentProfile() {
         <div className="ledger-title">Student Details</div>
         <div className="details-grid">
           {[
-            { label: "ADMISSION DATE", value: formatDate(student.admission_date), category: "academic" },
-            { label: "FATHER NAME", value: student.father_name, category: "family" },
-            { label: "MOTHER NAME", value: student.mother_name, category: "family" },
-            { label: "GENDER", value: student.gender, category: "demographics" },
-            { label: "DATE OF BIRTH", value: formatDate(student.dob), category: "demographics" },
-            { label: "CATEGORY", value: student.category, category: "demographics" },
-            { label: "AADHAAR", value: student.aadhaar_no, category: "demographics" },
-            { label: "MOBILE", value: student.phone, category: "demographics" },
-            { label: "FATHER MOBILE", value: student.father_mobile_no, category: "family" },
+            { label: "ADMISSION DATE", value: formatDate(student.admission_date) },
+            { label: "FATHER NAME", value: student.father_name },
+            { label: "MOTHER NAME", value: student.mother_name },
+            { label: "GENDER", value: student.gender },
+            { label: "DATE OF BIRTH", value: formatDate(student.dob) },
+            { label: "CATEGORY", value: student.category },
+            { label: "AADHAAR", value: student.aadhaar_no },
+            { label: "MOBILE", value: student.phone },
+            { label: "FATHER MOBILE", value: student.father_mobile_no },
           ].map((item, index) => (
-            <div key={index} className={`detail-item detail-${item.category}`}>
+            <div key={index} className="detail-item">
               <span className="detail-label">{item.label}</span>
               <span className="detail-value">{item.value || "--"}</span>
             </div>
           ))}
-          <div className="detail-item detail-address detail-demographics">
+          <div className="detail-item detail-address">
             <span className="detail-label">ADDRESS</span>
             <span className="detail-value">{student.address || "--"}</span>
           </div>
@@ -184,8 +212,8 @@ function StudentProfile() {
             <tr>
               <td>{currentMonthName}</td>
               <td>₹{formatCurrency(monthlyFee)}</td>
-              <td className="amount-paid">₹{formatCurrency(paidFee)}</td>
-              <td className="amount-due">₹{formatCurrency(dueFee)}</td>
+              <td className="amount-num">₹{formatCurrency(paidFee)}</td>
+              <td className="amount-num">₹{formatCurrency(dueFee)}</td>
               <td>
                 <span className={`status ${statusClass}`}>{statusText}</span>
               </td>
@@ -193,6 +221,51 @@ function StudentProfile() {
           </tbody>
         </table>
       </div>
+
+      {/* Full-size photo lightbox */}
+      {showPhoto && (
+        <div
+          className="photo-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${student.name} photo`}
+          onClick={() => setShowPhoto(false)}
+        >
+          <button
+            type="button"
+            className="photo-lightbox-close"
+            onClick={(event) => {
+              event.stopPropagation();
+              setShowPhoto(false);
+            }}
+            aria-label="Close photo"
+          >
+            <MdClose size={20} />
+          </button>
+
+          <figure
+            className="photo-lightbox-frame"
+            onClick={(event) => event.stopPropagation()}
+          >
+            {student.photo_url ? (
+              <img
+                src={student.photo_url}
+                alt={student.name}
+                className="photo-lightbox-img"
+              />
+            ) : (
+              <div className="photo-lightbox-initials">{initials}</div>
+            )}
+
+            <figcaption className="photo-lightbox-caption">
+              <span className="photo-lightbox-name">{student.name}</span>
+              <span className="photo-lightbox-meta">
+                {student.class || "—"} • {student.student_id || "—"}
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+      )}
     </>
   );
 }

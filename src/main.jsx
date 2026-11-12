@@ -6,6 +6,8 @@ import "./styles/login.css"
 import "./styles/studentprofile.css"
 import "./styles/pages/reports.css"
 import "./styles/pages/privacy.css"
+import "./styles/pages/notfound.css"
+import "./styles/components/loading.css"
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

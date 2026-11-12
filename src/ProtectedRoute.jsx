@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "./services/supabase";
+import LoadingScreen from "./components/LoadingScreen";
 
 function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true);
@@ -20,18 +21,7 @@ function ProtectedRoute({ children }) {
   }, []);
 
   if (loading) {
-    return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        Loading...
-      </div>
-    );
+    return <LoadingScreen label="Verifying your credentials…" />;
   }
 
   if (!user) {

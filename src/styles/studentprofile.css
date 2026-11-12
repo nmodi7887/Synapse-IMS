@@ -23,11 +23,14 @@
 }
 
 .student-photo {
+  position: relative;
   width: 120px;
   height: 140px;
+  padding: 0;
+  box-sizing: border-box;
   border-radius: 18px;
-  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
-  box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.25);
+  background: linear-gradient(135deg, #1e293b 0%, #000000 100%);
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.35);
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -36,7 +39,43 @@
   font-size: 34px;
   font-weight: 700;
   color: #ffffff;
-  border: 1px solid rgba(79, 70, 229, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  cursor: zoom-in;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.student-photo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px -6px rgba(0, 0, 0, 0.45);
+}
+
+.student-photo:focus-visible {
+  outline: 2px solid #0f172a;
+  outline-offset: 3px;
+}
+
+.photo-zoom-hint {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 9999px;
+  color: #0f172a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.student-photo:hover .photo-zoom-hint,
+.student-photo:focus-visible .photo-zoom-hint {
+  opacity: 1;
 }
 
 .photo-img {
@@ -48,6 +87,149 @@
 .photo-initials {
   font-size: 1.8rem;
   font-weight: bold;
+  color: #ffffff;
+}
+
+/* Touch devices can't hover — keep the zoom affordance visible */
+@media (hover: none) {
+  .photo-zoom-hint {
+    opacity: 1;
+  }
+}
+
+/* ---------- Full-size photo lightbox ---------- */
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  background: rgba(2, 6, 23, 0.78);
+  backdrop-filter: blur(6px);
+  animation: photoBackdropIn 160ms ease;
+}
+
+.photo-lightbox-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: min(460px, 92vw);
+  margin: 0;
+  padding: 14px 14px 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  box-shadow: 0 32px 70px -24px rgba(0, 0, 0, 0.55);
+  animation: photoZoomIn 190ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.photo-lightbox-img {
+  display: block;
+  width: auto;
+  max-width: min(400px, 82vw);
+  max-height: 66vh;
+  object-fit: contain;
+  background: #0f172a;
+  border-radius: 16px;
+}
+
+.photo-lightbox-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(300px, 74vw);
+  aspect-ratio: 6 / 7;
+  max-height: 60vh;
+  background: linear-gradient(135deg, #1e293b 0%, #000000 100%);
+  border-radius: 18px;
+  color: #ffffff;
+  font-size: 68px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.photo-lightbox-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 14px;
+  text-align: center;
+}
+
+.photo-lightbox-name {
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.photo-lightbox-meta {
+  color: #64748b;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.photo-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.photo-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.photo-lightbox-close:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@keyframes photoBackdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes photoZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-lightbox,
+  .photo-lightbox-frame {
+    animation: none;
+  }
 }
 
 .student-basic {
@@ -58,7 +240,7 @@
 .student-name {
   font-size: 1.6rem;
   margin: 0 0 4px 0;
-  color: var(--text-primary);
+  color: var(--text-heading);
   letter-spacing: -0.02em;
 }
 
@@ -80,8 +262,8 @@
 
 .meta-label {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--text-heading);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -89,33 +271,6 @@
 .meta-value {
   font-size: 14px;
   color: var(--text-secondary);
-}
-
-.meta-badge {
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  padding: 3px 10px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.4;
-  white-space: nowrap;
-}
-
-.meta-badge--id {
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 600;
-}
-
-.meta-badge--class {
-  background: #eef2ff;
-  color: #4338ca;
-  border: 1px solid #c7d2fe;
-  font-weight: 600;
 }
 
 .current-fee-card {
@@ -144,7 +299,7 @@
 }
 
 .fee-row span {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .fee-row strong {
@@ -152,18 +307,17 @@
   font-size: 16px;
 }
 
-.fee-row .amount-paid,
-.ledger-table .amount-paid {
-  color: #059669;
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 600;
-}
+/* Fee figures — mirrors the Fees page `.cell-amount` treatment */
 
-.fee-row .amount-due,
-.ledger-table .amount-due {
-  color: #d97706;
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 700;
+.fee-row .amount-num,
+.ledger-table .amount-num {
+  color: #0f172a;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .status-badge,
@@ -213,9 +367,9 @@
   padding: 14px 16px;
   border-bottom: 1px solid var(--border-subtle);
   background: var(--bg-subtle);
-  color: var(--text-primary);
+  color: var(--text-heading);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .ledger-table {
@@ -235,6 +389,7 @@
   min-width: 160px;
   background: #f8fafc;
   border: 1px solid var(--border-subtle);
+  border-left: 3px solid #0891b2;
   border-radius: var(--radius-md);
   padding: 12px 16px;
   display: flex;
@@ -246,30 +401,8 @@
     border-color 140ms ease;
 }
 
-/* Category accents */
-
-.detail-academic {
-  border-left: 3px solid #2563eb;
-}
-
-.detail-academic:hover {
-  background: #eff6ff;
-}
-
-.detail-family {
-  border-left: 3px solid #4f46e5;
-}
-
-.detail-family:hover {
-  background: #eef2ff;
-}
-
-.detail-demographics {
-  border-left: 3px solid #0284c7;
-}
-
-.detail-demographics:hover {
-  background: #f0f9ff;
+.detail-item:hover {
+  background: #ecfeff;
 }
 
 .detail-address {
@@ -279,8 +412,8 @@
 
 .detail-label {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--text-heading);
   letter-spacing: 0.06em;
 }
 

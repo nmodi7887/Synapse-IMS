@@ -1,0 +1,114 @@
+/* ============================================================
+   Reusable session loading screen
+   ============================================================ */
+
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  background: var(--bg-canvas);
+  font-family: var(--font-sans);
+}
+
+.loading-screen-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 340px;
+  padding: 32px 28px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06);
+  text-align: center;
+}
+
+.loading-screen-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 9999px;
+  color: #2563eb;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.loading-screen-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 20px;
+}
+
+.loading-screen-logo {
+  display: block;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.loading-screen-name {
+  color: #0f172a;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.loading-screen-bar {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.loading-screen-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: #2563eb;
+  border-radius: 9999px;
+  animation: loadingSweep 1.15s ease-in-out infinite;
+}
+
+.loading-screen-label {
+  margin: 14px 0 0;
+  color: #64748b;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+@keyframes loadingSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen-bar-fill {
+    width: 100%;
+    animation: none;
+    opacity: 0.5;
+  }
+}

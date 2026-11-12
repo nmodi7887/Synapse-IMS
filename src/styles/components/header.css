@@ -30,7 +30,7 @@
 }
 
 .recent-section-header {
-  color: var(--text-primary);
+  color: var(--text-heading);
   font-size: 15px;
   margin-bottom: 12px;
   font-weight: 600;

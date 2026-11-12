@@ -14,9 +14,9 @@
 
 .card h3 {
   margin: 0 0 12px;
-  color: #64748b;
+  color: var(--text-heading);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.06em;
   line-height: 1.4;
   text-transform: uppercase;
@@ -57,15 +57,6 @@
   font-size: 13px;
   font-weight: 500;
   letter-spacing: normal;
-}
-
-/* Financial metrics keep their semantic tone */
-.card-stat p.stat-value-green {
-  color: #059669;
-}
-
-.card-stat p.stat-value-red {
-  color: #dc2626;
 }
 
 /* ---------- Card form controls ---------- */

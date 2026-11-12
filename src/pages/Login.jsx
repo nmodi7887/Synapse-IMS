@@ -72,7 +72,7 @@ function Login() {
           <h1 className="login-display">
             Loved by Institutes,
             <br />
-            <span className="login-display-accent">Makes Easy  </span>Working.
+            <span className="login-display-accent">Working </span>Made Easy.
           </h1>
           <p className="login-brand-sub">
             Unified student management, real-time fee collection and

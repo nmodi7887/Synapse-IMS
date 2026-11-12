@@ -282,6 +282,7 @@ function MainLayout({ children }) {
 
       <main className="main-content">
         {children}
+        <div className="page-spacer" aria-hidden="true" />
         <Footer />
       </main>
     </div>
