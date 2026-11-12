@@ -250,18 +250,12 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-/* Label row with the inline "Forgot password?" action */
+/* Inline "Forgot password?" action below the password field */
 
-.login-label-row {
+.login-forgot-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 6px;
-}
-
-.login-field .login-label-row label {
-  margin-bottom: 0;
+  justify-content: flex-end;
+  margin-top: 8px;
 }
 
 .login-link-btn {

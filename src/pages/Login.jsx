@@ -70,12 +70,12 @@ function Login() {
 
         <div className="login-brand-copy">
           <h1 className="login-display">
-            Institutional clarity.
+            Loved by Institutes,
             <br />
-            <span className="login-display-accent">Automated</span> precision.
+            <span className="login-display-accent">Makes Easy  </span>Working.
           </h1>
           <p className="login-brand-sub">
-            Unified student registry, real-time fee reconciliation, and
+            Unified student management, real-time fee collection and
             automated billing oversight.
           </p>
         </div>
@@ -176,8 +176,15 @@ function Login() {
                 </div>
 
                 <div className="login-field">
-                  <div className="login-label-row">
-                    <label htmlFor="login-password">Password</label>
+                  <label htmlFor="login-password">Password</label>
+                  <input
+                    id="login-password"
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <div className="login-forgot-row">
                     <button
                       type="button"
                       className="login-link-btn"
@@ -186,13 +193,6 @@ function Login() {
                       Forgot password?
                     </button>
                   </div>
-                  <input
-                    id="login-password"
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
                 </div>
 
                 <button type="submit" className="login-btn">
