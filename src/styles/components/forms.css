@@ -1,9 +1,3 @@
-/* ============================================================
-   Forms — clinical light controls
-   ============================================================ */
-
-/* ---------- Labels ---------- */
-
 .field-label,
 .form-field-label {
   display: block;
@@ -108,12 +102,12 @@
 /* ---------- Admission form header ---------- */
 
 .admission-header {
+  width: 92%;
+  max-width: 780px;
+  margin: 28px auto 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  max-width: 780px;
-  margin: 24px auto 16px;
 }
 
 .admission-header .back-btn {
@@ -173,23 +167,23 @@
 }
 
 .photo-preview {
+  width: 150px;
+  height: 180px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
-  flex-shrink: 0;
   overflow: hidden;
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  border-radius: 16px;
-  color: #94a3b8;
 }
 
 .photo-preview-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .photo-upload-copy {
@@ -463,13 +457,11 @@
 
 /* ---------- Responsive ---------- */
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .admission-header {
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: flex-start;
     gap: 12px;
-    width: 92%;
-    margin: 16px auto 12px;
   }
 
   .admission-title {

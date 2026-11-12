@@ -308,6 +308,7 @@ function Admission() {
               <MdPhotoCamera size={24} />
             )}
           </div>
+      
           <div className="photo-upload-copy">
             <input
               type="file"
@@ -320,6 +321,7 @@ function Admission() {
               Upload Student Photo
             </label>
             <span className="photo-upload-hint">JPG or PNG, max 2MB</span>
+            
           </div>
         </div>
 
@@ -520,7 +522,7 @@ function Admission() {
         <div className="admission-actions">
           <button type="button" className="btn-secondary" onClick={() => navigate("/students")}>Cancel</button>
           <button type="submit" className="btn" disabled={loading}>
-            {loading ? "Saving..." : id ? "Update Student" : "Complete Registration"}
+            {loading ? "Saving..." : id ? "Update Student" : "Submit"}
           </button>
         </div>
       </form>
