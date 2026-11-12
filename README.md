@@ -1,5 +1,5 @@
 # Synapse IMS — Institute Management System
-![app screenshot](images.png)
+![app screenshot](Image.png)
 Synapse IMS is a full-stack web application built to simplify student administration, fee management, and institutional record keeping for coaching centers and educational institutes.
 
 ## Features
