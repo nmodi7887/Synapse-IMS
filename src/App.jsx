@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./ProtectedRoute";
 
 import MainLayout from "./components/MainLayout";
@@ -22,6 +23,12 @@ function App() {
 
         <Route path="/login" element={<Login />} />
 
+        {/* Public recovery route — Supabase email link lands here */}
+        <Route path="/reset-password" element={<ResetPassword />} />
+
+        {/* Public legal route — intentionally outside ProtectedRoute/MainLayout */}
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+
         <Route
           path="*"
           element={
@@ -30,6 +37,7 @@ function App() {
               <MainLayout>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/students" element={<Students />} />
                   <Route path="/students/:id" element={<StudentProfile />} />
                   <Route path="/admission" element={<Admission />} />
@@ -38,7 +46,6 @@ function App() {
                   <Route path="/promotion" element={<Promotion />} />
                   <Route path="/fees" element={<Fees />} />
                   <Route path="/reports" element={<Reports />} />
-                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 </Routes>
               </MainLayout>
               </ToastProvider>

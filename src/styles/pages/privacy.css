@@ -1,0 +1,90 @@
+/* ============================================================
+   Public privacy policy — standalone shell
+   ============================================================ */
+
+.policy-page {
+  min-height: 100vh;
+  padding-bottom: 64px;
+  background: var(--bg-canvas);
+}
+
+/* ---------- Standalone top bar (no app navigation) ---------- */
+
+.policy-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 20px 0;
+}
+
+.policy-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.policy-nav-logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.policy-nav-name {
+  color: #0f172a;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.policy-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  color: #475569;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 140ms ease;
+}
+
+.policy-back:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.policy-back:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* ---------- Document body ---------- */
+
+.policy-body {
+  max-width: 860px;
+  margin: 32px auto 0;
+  padding: 0 20px;
+}
+
+@media (max-width: 560px) {
+  .policy-body > div {
+    padding: 24px 20px !important;
+  }
+}

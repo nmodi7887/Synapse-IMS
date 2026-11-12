@@ -100,17 +100,17 @@ function StudentProfile() {
           <div className="student-basic">
             <h2 className="student-name">{student.name}</h2>
             <div className="student-meta-grid">
-              <div className="meta-item">
+              <div className="meta-item meta-id">
                 <span className="meta-label">Student ID</span>
-                <span className="meta-value">{student.student_id}</span>
+                <span className="meta-value meta-badge meta-badge--id">{student.student_id}</span>
               </div>
               <div className="meta-item">
                 <span className="meta-label">Admission No.</span>
                 <span className="meta-value">{student.roll_no || "--"}</span>
               </div>
-              <div className="meta-item meta-full">
+              <div className="meta-item meta-full meta-class">
                 <span className="meta-label">Class</span>
-                <span className="meta-value">{student.class || "--"}</span>
+                <span className="meta-value meta-badge meta-badge--class">{student.class || "--"}</span>
               </div>
             </div>
           </div>
@@ -125,11 +125,11 @@ function StudentProfile() {
             </div>
             <div className="fee-row">
               <span>Paid</span>
-              <strong>₹{formatCurrency(paidFee)}</strong>
+              <strong className="amount-paid">₹{formatCurrency(paidFee)}</strong>
             </div>
             <div className="fee-row">
               <span>Due</span>
-              <strong className="due-text" style={{ color: dueFee > 0 ? "var(--status-due-text)" : "inherit" }}>₹{formatCurrency(dueFee)}</strong>
+              <strong className="amount-due">₹{formatCurrency(dueFee)}</strong>
             </div>
             <div className="fee-row">
               <span>Status</span>
@@ -143,22 +143,22 @@ function StudentProfile() {
         <div className="ledger-title">Student Details</div>
         <div className="details-grid">
           {[
-            { label: "ADMISSION DATE", value: formatDate(student.admission_date) },
-            { label: "FATHER NAME", value: student.father_name },
-            { label: "MOTHER NAME", value: student.mother_name },
-            { label: "GENDER", value: student.gender },
-            { label: "DATE OF BIRTH", value: formatDate(student.dob) },
-            { label: "CATEGORY", value: student.category },
-            { label: "AADHAAR", value: student.aadhaar_no },
-            { label: "MOBILE", value: student.phone },
-            { label: "FATHER MOBILE", value: student.father_mobile_no },
+            { label: "ADMISSION DATE", value: formatDate(student.admission_date), category: "academic" },
+            { label: "FATHER NAME", value: student.father_name, category: "family" },
+            { label: "MOTHER NAME", value: student.mother_name, category: "family" },
+            { label: "GENDER", value: student.gender, category: "demographics" },
+            { label: "DATE OF BIRTH", value: formatDate(student.dob), category: "demographics" },
+            { label: "CATEGORY", value: student.category, category: "demographics" },
+            { label: "AADHAAR", value: student.aadhaar_no, category: "demographics" },
+            { label: "MOBILE", value: student.phone, category: "demographics" },
+            { label: "FATHER MOBILE", value: student.father_mobile_no, category: "family" },
           ].map((item, index) => (
-            <div key={index} className="detail-item">
+            <div key={index} className={`detail-item detail-${item.category}`}>
               <span className="detail-label">{item.label}</span>
               <span className="detail-value">{item.value || "--"}</span>
             </div>
           ))}
-          <div className="detail-item detail-address">
+          <div className="detail-item detail-address detail-demographics">
             <span className="detail-label">ADDRESS</span>
             <span className="detail-value">{student.address || "--"}</span>
           </div>
@@ -184,8 +184,8 @@ function StudentProfile() {
             <tr>
               <td>{currentMonthName}</td>
               <td>₹{formatCurrency(monthlyFee)}</td>
-              <td>₹{formatCurrency(paidFee)}</td>
-              <td style={{ color: dueFee > 0 ? "var(--status-due-text)" : "inherit" }}>₹{formatCurrency(dueFee)}</td>
+              <td className="amount-paid">₹{formatCurrency(paidFee)}</td>
+              <td className="amount-due">₹{formatCurrency(dueFee)}</td>
               <td>
                 <span className={`status ${statusClass}`}>{statusText}</span>
               </td>
