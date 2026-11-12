@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import {
   MdDashboard,
-  MdLogout,
   MdPeople,
   MdSchool,
   MdCurrencyRupee,
@@ -11,7 +10,7 @@ import {
   MdMenu,
   MdClose,
   MdReceiptLong,
-  MdPolicy,
+  MdSearch,
 } from "react-icons/md";
 import { supabase } from "../services/supabase";
 import Footer from "./Footer";
@@ -96,9 +95,11 @@ function MainLayout({ children }) {
 
   const closeMenu = () => setIsMobileOpen(false);
 
-  const firstName = profile?.full_name
-    ? profile.full_name.trim().split(/\s+/)[0]
-    : "";
+  const userInitial = (
+    user?.email?.trim()?.charAt(0) ||
+    profile?.full_name?.trim()?.charAt(0) ||
+    "A"
+  ).toUpperCase();
 
   return (
     <div className="layout">
@@ -129,21 +130,17 @@ function MainLayout({ children }) {
           </Link>
 
           <div className="nav-actions">
-            <Link
-              to="/"
-              className={`home-link ${
-                location.pathname === "/" ? "current" : ""
-              }`}
-              onClick={closeMenu}
-            >
-              Dashboard
-            </Link>
             <button
               type="button"
-              className="account-pill"
+              className="user-chip"
               onClick={() => setIsMobileOpen(true)}
             >
-              {firstName || "Account"}
+              <span className="user-initials" aria-hidden="true">
+                {userInitial}
+              </span>
+              <span className="user-chip-name">
+                {profile?.full_name || "Account"}
+              </span>
             </button>
           </div>
         </header>
@@ -151,8 +148,8 @@ function MainLayout({ children }) {
         {/* Unified mega-menu body */}
         <div className="mega-body">
           <nav>
-            <div className="menu-col">
-              <span className="menu-col-title">Modules</span>
+            <span className="menu-col-title">System Directory</span>
+            <div className="directory-grid">
               <Link
                 to="/"
                 className={`nav-link ${
@@ -197,10 +194,6 @@ function MainLayout({ children }) {
                 <span className="nav-text">Student Promotion</span>
                 <span className="nav-sub">Batch class upgrades</span>
               </Link>
-            </div>
-
-            <div className="menu-col">
-              <span className="menu-col-title">Operations</span>
               <Link
                 to="/fees"
                 className={`nav-link ${
@@ -210,6 +203,7 @@ function MainLayout({ children }) {
               >
                 <MdCurrencyRupee />
                 <span className="nav-text">Fees Workspace</span>
+                <span className="nav-sub">Process &amp; track receipts</span>
               </Link>
               <Link
                 to="/reports"
@@ -220,20 +214,27 @@ function MainLayout({ children }) {
               >
                 <MdReceiptLong />
                 <span className="nav-text">Billing &amp; Invoices</span>
-              </Link>
-              <Link to="/reports" className="nav-link" onClick={closeMenu}>
-                <MdAnalytics />
-                <span className="nav-text">Reports &amp; Analytics</span>
+                <span className="nav-sub">Generate bills &amp; invoice logs</span>
               </Link>
               <Link
-                to="/privacy-policy"
+                to="/reports"
                 className={`nav-link ${
-                  location.pathname === "/privacy-policy" ? "active" : ""
+                  location.pathname === "/reports" ? "active" : ""
                 }`}
                 onClick={closeMenu}
               >
-                <MdPolicy />
-                <span className="nav-text">Privacy Policy</span>
+                <MdAnalytics />
+                <span className="nav-text">Reports &amp; Analytics</span>
+                <span className="nav-sub">Registry &amp; transaction metrics</span>
+              </Link>
+              <Link
+                to="/students"
+                className="nav-link"
+                onClick={closeMenu}
+              >
+                <MdSearch />
+                <span className="nav-text">Search</span>
+                <span className="nav-sub">Student, ID, or class finder</span>
               </Link>
             </div>
           </nav>
@@ -245,10 +246,6 @@ function MainLayout({ children }) {
             </div>
             <div className="account-role">{profile?.role || "—"}</div>
             <div className="account-email">{user?.email || "—"}</div>
-            <div className="session-status">
-              <span className="status-dot" aria-hidden="true" />
-              {user ? "Signed in" : "Checking session…"}
-            </div>
 
             {confirmSignOut ? (
               <div className="signout-confirm">
@@ -273,10 +270,10 @@ function MainLayout({ children }) {
             ) : (
               <button
                 type="button"
-                className="signout-link"
+                className="sign-out-btn"
                 onClick={() => setConfirmSignOut(true)}
               >
-                Sign Out →
+                Sign Out
               </button>
             )}
           </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { MdCalendarMonth } from "react-icons/md";
+import { MdCalendarMonth, MdPhotoCamera } from "react-icons/md";
 import { supabase } from "../services/supabase";
 import { sanitize, validateRequired, validatePhone, validateFile, checkDuplicate, GENDER_OPTIONS, CATEGORY_OPTIONS, ALL_CLASSES, validateInList } from "../utils/validation";
 import { useToast } from "../components/Toast";
@@ -291,37 +291,42 @@ function Admission() {
 
   return (
     <>
-      <div className="page-top page-top-row">
+      <div className="admission-header">
         <button className="back-btn" onClick={() => navigate("/students")}>← Back to Directory</button>
-        <h1 className="page-title" style={{ fontSize: "24px", margin: 0 }}>
+        <h1 className="admission-title">
           {id ? "Edit Student Profile" : "New Admission Registration"}
         </h1>
       </div>
 
       <form className="admission-form" onSubmit={handleSubmit}>
-        <div className="card photo-upload-card">
-          <div className="profile-avatar">
+        {/* STUDENT PHOTO */}
+        <div className="photo-uploader">
+          <div className="photo-preview">
             {previewUrl ? (
-              <img src={previewUrl} alt="Preview" className="avatar-img" />
+              <img src={previewUrl} alt="Student photo preview" className="photo-preview-img" />
             ) : (
-              <span style={{ fontSize: "28px" }}>📸</span>
+              <MdPhotoCamera size={24} />
             )}
           </div>
-          <div>
-            <h3 style={{ marginBottom: "6px" }}>Student Profile Image</h3>
+          <div className="photo-upload-copy">
             <input
               type="file"
+              id="student-photo-input"
               accept="image/*"
               onChange={handleFileChange}
-              style={{ background: "transparent", border: "none", padding: 0, fontSize: "13px", color: "var(--muted)" }}
+              className="photo-file-input"
             />
+            <label htmlFor="student-photo-input" className="photo-upload-btn">
+              Upload Student Photo
+            </label>
+            <span className="photo-upload-hint">JPG or PNG, max 2MB</span>
           </div>
         </div>
 
         {/* PERSONAL DETAILS */}
-        <div className="card">
-          <h3>Personal Details</h3>
-          <div className="profile-grid">
+        <section className="form-section">
+          <h3 className="form-section-title">Personal Details</h3>
+          <div className="form-grid">
             <div>
               <strong>Full Name *</strong>
               <input
@@ -353,7 +358,7 @@ function Admission() {
             </div>
             <div>
               <strong>Date of Birth</strong>
-              <div style={{ display: "flex", gap: "6px" }}>
+              <div className="dob-field">
                 <input
                   type="text"
                   name="dob"
@@ -361,34 +366,25 @@ function Admission() {
                   onChange={handleChange}
                   placeholder="DD/MM/YYYY"
                   required
-                  style={{ flex: 1 }}
                 />
                 <button
                   type="button"
+                  className="dob-picker-btn"
                   onClick={() => datePickerRef.current?.showPicker()}
-                  style={{
-                    padding: "8px 12px",
-                    background: "rgba(129, 140, 248, 0.15)",
-                    border: "1px solid rgba(129, 140, 248, 0.25)",
-                    borderRadius: "10px",
-                    color: "#a5b4fc",
-                    cursor: "pointer",
-                    fontSize: "16px",
-                    lineHeight: 1,
-                  }}
                   title="Pick a date"
+                  aria-label="Pick a date"
                 >
                   <MdCalendarMonth size={18} />
                 </button>
                 <input
                   type="date"
                   ref={datePickerRef}
+                  className="dob-native"
                   onChange={(e) => {
                     if (!e.target.value) return;
                     const [y, m, d] = e.target.value.split("-");
                     handleChange({ target: { name: "dob", value: `${d}/${m}/${y}` } });
                   }}
-                  style={{ width: 0, height: 0, padding: 0, border: "none", opacity: 0, position: "absolute" }}
                 />
               </div>
             </div>
@@ -421,12 +417,12 @@ function Admission() {
               </select>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* COMMUNICATIONS */}
-        <div className="card">
-          <h3>Contact & Identity Credentials</h3>
-          <div className="profile-grid">
+        <section className="form-section">
+          <h3 className="form-section-title">Contact &amp; Identity Credentials</h3>
+          <div className="form-grid">
             <div>
               <strong>Primary Mobile Number</strong>
               <input
@@ -467,12 +463,12 @@ function Admission() {
               />
             </div>
           </div>
-        </div>
+        </section>
 
         {/* ACADEMIC PROFILE */}
-        <div className="card">
-          <h3>Academic Information</h3>
-          <div className="profile-grid">
+        <section className="form-section">
+          <h3 className="form-section-title">Academic Information</h3>
+          <div className="form-grid">
             <div>
               <strong>Class *</strong>
               <input
@@ -503,12 +499,12 @@ function Admission() {
               />
             </div>
           </div>
-        </div>
+        </section>
 
         {/* FINANCIAL BALANCE FEES */}
-        <div className="card">
-          <h3>Fee Structures</h3>
-          <div className="profile-grid">
+        <section className="form-section">
+          <h3 className="form-section-title">Fee Structures</h3>
+          <div className="form-grid">
             <div>
               <strong>Monthly Fee (₹)</strong>
               <SecureNumberInput
@@ -519,12 +515,12 @@ function Admission() {
               />
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="form-actions">
+        <div className="admission-actions">
           <button type="button" className="btn-secondary" onClick={() => navigate("/students")}>Cancel</button>
           <button type="submit" className="btn" disabled={loading}>
-            {loading ? "Saving..." : id ? "Update Student" : "Finalize Admission"}
+            {loading ? "Saving..." : id ? "Update Student" : "Complete Registration"}
           </button>
         </div>
       </form>
