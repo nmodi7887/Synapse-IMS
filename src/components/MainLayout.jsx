@@ -10,6 +10,8 @@ import {
   MdTrendingUp,
   MdMenu,
   MdClose,
+  MdReceiptLong,
+  MdPolicy,
 } from "react-icons/md";
 import { supabase } from "../services/supabase";
 import Footer from "./Footer";
@@ -17,6 +19,7 @@ import Footer from "./Footer";
 function MainLayout({ children }) {
   const location = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -40,11 +43,20 @@ function MainLayout({ children }) {
     loadUser();
   }, []);
 
+  /* Reset the two-step sign-out whenever the mega-menu closes */
   useEffect(() => {
+    if (!isMobileOpen) setConfirmSignOut(false);
+  }, [isMobileOpen]);
+
+  /* Auto-hide the floating navbar while scrolling down */
+  useEffect(() => {
+    // Keep the navbar (and its mega-menu) pinned while the menu is open.
     if (isMobileOpen) {
       setNavbarHidden(false);
       return undefined;
     }
+
+    // A route change resets scroll, so bring the navbar back into view.
     setNavbarHidden(false);
 
     let prevScrollY = window.scrollY;
@@ -82,107 +94,191 @@ function MainLayout({ children }) {
     navigate("/login");
   };
 
+  const closeMenu = () => setIsMobileOpen(false);
+
+  const firstName = profile?.full_name
+    ? profile.full_name.trim().split(/\s+/)[0]
+    : "";
+
   return (
     <div className="layout">
       {isMobileOpen && (
-        <div
-          className="mobile-overlay"
-          onClick={() => setIsMobileOpen(false)}
-        />
+        <div className="mobile-overlay" onClick={closeMenu} />
       )}
-      <button
-        className="mobile-menu-toggle-trigger"
-        onClick={() => setIsMobileOpen(!isMobileOpen)}
-        aria-label="Toggle menu"
-      >
-        {isMobileOpen ? <MdClose size={20} /> : <MdMenu size={20} />}
-      </button>
 
       <aside
         className={`sidebar ${
           isMobileOpen ? "mobile-expanded" : "mobile-collapsed"
         }${navbarHidden ? " navbar--hidden" : ""}`}
       >
-        <div className="logo-container">
-          <img src="/logo.png" alt="SWC Logo" className="sidebar-logo" />
-        </div>
+        {/* Top row — the pill bar when closed, the card header when expanded */}
+        <header className="sidebar-bar">
+          <button
+            type="button"
+            className="menu-toggle"
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMobileOpen ? <MdClose size={16} /> : <MdMenu size={16} />}
+            <span>{isMobileOpen ? "Close" : "Menu"}</span>
+          </button>
 
-        <div className="nav-center-branding">
-          <span className="branding-title">SUCCESS WITH CLASS</span>
-        </div>
+          <Link to="/" className="nav-brand" onClick={closeMenu}>
+            <img src="/logo.png" alt="SWC Logo" className="brand-logo" />
+            <span className="brand-name">Success With Class</span>
+          </Link>
 
-        <nav>
-          <Link
-            to="/"
-            className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
-            onClick={() => setIsMobileOpen(false)}
-          >
-            <MdDashboard />
-            <span className="nav-text">Dashboard</span>
-          </Link>
-          <Link
-            to="/students"
-            className={`nav-link ${
-              location.pathname.startsWith("/students") ? "active" : ""
-            }`}
-            onClick={() => setIsMobileOpen(false)}
-          >
-            <MdPeople />
-            <span className="nav-text">Students</span>
-          </Link>
-          <Link
-            to="/teachers"
-            className={`nav-link ${
-              location.pathname === "/teachers" ? "active" : ""
-            }`}
-            onClick={() => setIsMobileOpen(false)}
-          >
-            <MdSchool />
-            <span className="nav-text">Teachers</span>
-          </Link>
-          <Link
-            to="/promotion"
-            className={`nav-link ${
-              location.pathname.startsWith("/promotion") ? "active" : ""
-            }`}
-            onClick={() => setIsMobileOpen(false)}
-          >
-            <MdTrendingUp />
-            <span className="nav-text">Student Promotion</span>
-          </Link>
-          <Link
-            to="/fees"
-            className={`nav-link ${
-              location.pathname === "/fees" ? "active" : ""
-            }`}
-            onClick={() => setIsMobileOpen(false)}
-          >
-            <MdCurrencyRupee />
-            <span className="nav-text">Fees</span>
-          </Link>
-          <Link
-            to="/reports"
-            className={`nav-link ${
-              location.pathname === "/reports" ? "active" : ""
-            }`}
-            onClick={() => setIsMobileOpen(false)}
-          >
-            <MdAnalytics />
-            <span className="nav-text">Billing</span>
-          </Link>
-        </nav>
-
-        <div className="sidebar-footer">
-          <div className="profile-card">
-            <div className="profile-info">
-              <div className="user-name">
-                {profile?.full_name || "Loading..."}
-              </div>
-              <div className="user-role">{profile?.role || ""}</div>
-            </div>
-            <button className="logout-btn" onClick={handleLogout} title="Logout">
-              <MdLogout size={18} />
+          <div className="nav-actions">
+            <Link
+              to="/"
+              className={`home-link ${
+                location.pathname === "/" ? "current" : ""
+              }`}
+              onClick={closeMenu}
+            >
+              Dashboard
+            </Link>
+            <button
+              type="button"
+              className="account-pill"
+              onClick={() => setIsMobileOpen(true)}
+            >
+              {firstName || "Account"}
             </button>
+          </div>
+        </header>
+
+        {/* Unified mega-menu body */}
+        <div className="mega-body">
+          <nav>
+            <div className="menu-col">
+              <span className="menu-col-title">Modules</span>
+              <Link
+                to="/"
+                className={`nav-link ${
+                  location.pathname === "/" ? "active" : ""
+                }`}
+                onClick={closeMenu}
+              >
+                <MdDashboard />
+                <span className="nav-text">Dashboard</span>
+                <span className="nav-sub">Overview &amp; live metrics</span>
+              </Link>
+              <Link
+                to="/students"
+                className={`nav-link ${
+                  location.pathname.startsWith("/students") ? "active" : ""
+                }`}
+                onClick={closeMenu}
+              >
+                <MdPeople />
+                <span className="nav-text">Students</span>
+                <span className="nav-sub">Manage enrolled registry</span>
+              </Link>
+              <Link
+                to="/teachers"
+                className={`nav-link ${
+                  location.pathname === "/teachers" ? "active" : ""
+                }`}
+                onClick={closeMenu}
+              >
+                <MdSchool />
+                <span className="nav-text">Teachers</span>
+                <span className="nav-sub">Faculty directory &amp; assignments</span>
+              </Link>
+              <Link
+                to="/promotion"
+                className={`nav-link ${
+                  location.pathname.startsWith("/promotion") ? "active" : ""
+                }`}
+                onClick={closeMenu}
+              >
+                <MdTrendingUp />
+                <span className="nav-text">Student Promotion</span>
+                <span className="nav-sub">Batch class upgrades</span>
+              </Link>
+            </div>
+
+            <div className="menu-col">
+              <span className="menu-col-title">Operations</span>
+              <Link
+                to="/fees"
+                className={`nav-link ${
+                  location.pathname === "/fees" ? "active" : ""
+                }`}
+                onClick={closeMenu}
+              >
+                <MdCurrencyRupee />
+                <span className="nav-text">Fees Workspace</span>
+              </Link>
+              <Link
+                to="/reports"
+                className={`nav-link ${
+                  location.pathname === "/reports" ? "active" : ""
+                }`}
+                onClick={closeMenu}
+              >
+                <MdReceiptLong />
+                <span className="nav-text">Billing &amp; Invoices</span>
+              </Link>
+              <Link to="/reports" className="nav-link" onClick={closeMenu}>
+                <MdAnalytics />
+                <span className="nav-text">Reports &amp; Analytics</span>
+              </Link>
+              <Link
+                to="/privacy-policy"
+                className={`nav-link ${
+                  location.pathname === "/privacy-policy" ? "active" : ""
+                }`}
+                onClick={closeMenu}
+              >
+                <MdPolicy />
+                <span className="nav-text">Privacy Policy</span>
+              </Link>
+            </div>
+          </nav>
+
+          <div className="account-card">
+            <span className="session-tag">Active Session</span>
+            <div className="account-name">
+              {profile?.full_name || "Loading..."}
+            </div>
+            <div className="account-role">{profile?.role || "—"}</div>
+            <div className="account-email">{user?.email || "—"}</div>
+            <div className="session-status">
+              <span className="status-dot" aria-hidden="true" />
+              {user ? "Signed in" : "Checking session…"}
+            </div>
+
+            {confirmSignOut ? (
+              <div className="signout-confirm">
+                <p>Confirm sign out?</p>
+                <div className="signout-actions">
+                  <button
+                    type="button"
+                    className="signout-cancel"
+                    onClick={() => setConfirmSignOut(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="signout-confirm-btn"
+                    onClick={handleLogout}
+                  >
+                    Confirm Logout
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="signout-link"
+                onClick={() => setConfirmSignOut(true)}
+              >
+                Sign Out →
+              </button>
+            )}
           </div>
         </div>
       </aside>
