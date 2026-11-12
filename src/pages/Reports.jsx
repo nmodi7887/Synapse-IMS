@@ -3,7 +3,6 @@ import { supabase } from "../services/supabase";
 import SecureNumberInput from "../components/SecureNumberInput";
 import { formatCurrency } from "../utils/validation";
 import {
-  MdSearch,
   MdArrowDropDown,
   MdPrint,
   MdAssessment,
@@ -442,17 +441,9 @@ function Reports() {
                 marginBottom: "18px",
               }}
             >
-              <MdSearch
-                style={{
-                  position: "absolute",
-                  left: "14px",
-                  color: "var(--muted)",
-                  fontSize: "22px",
-                }}
-              />
               <input
                 type="text"
-                placeholder="Type name, ID or class..."
+                placeholder="Search by Name or ID"
                 value={studentSearchInput}
                 onChange={(e) => {
                   setStudentSearchInput(e.target.value);
@@ -466,7 +457,7 @@ function Reports() {
                 }}
                 style={{
                   width: "100%",
-                  padding: "14px 40px 14px 45px",
+                  padding: "14px 40px 14px 14px",
                   fontSize: "15px",
                   borderRadius: "10px",
                 }}

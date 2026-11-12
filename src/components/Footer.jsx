@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/components/footer.css';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -26,7 +27,7 @@ export default function Footer() {
           <h4 className="footer-heading">INFORMATION</h4>
           <ul className="footer-links">
             <li><a href="#terms">Terms & Conditions</a></li>
-            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><Link to="/privacy-policy">Privacy Policy</Link></li>
             <li><a href="#security">Data Security</a></li>
             <li><a href="#compliance">Audit Guidelines</a></li>
           </ul>

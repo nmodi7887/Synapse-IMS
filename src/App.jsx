@@ -13,6 +13,7 @@ import Teachers from "./pages/Teachers";
 import Fees from "./pages/Fees";
 import Reports from "./pages/Reports";
 import Promotion from "./pages/Promotion";
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                   <Route path="/promotion" element={<Promotion />} />
                   <Route path="/fees" element={<Fees />} />
                   <Route path="/reports" element={<Reports />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 </Routes>
               </MainLayout>
               </ToastProvider>
